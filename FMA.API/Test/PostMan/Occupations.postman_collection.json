@@ -1,0 +1,119 @@
+{
+	"info": {
+		"_postman_id": "323a7ace-5fe1-42c9-a829-82a75d63a0c0",
+		"name": "Occupations",
+		"description": "Requests and tests for the fma api occupations outer facing model",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Occupations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0c7df8ca-7f54-40f0-a7c1-f4c0c83afee9",
+						"exec": [
+							"pm.test(\"return http 200 OK\",function() {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:50467/api/occupations",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations"
+					]
+				},
+				"description": "requesting all occupations\nwhen occupation is available should return a 200 ok status"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Occupation with bad guid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "782021ee-c7be-49d7-a959-63354918b59b",
+						"exec": [
+							"pm.test(\"return status 404\",function() {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/occupations/99216871-834b-4108-9bfc-86e7bc1f5a52",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations",
+						"99216871-834b-4108-9bfc-86e7bc1f5a52"
+					]
+				},
+				"description": "should return a http status code 404"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Occupation with id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf1598d0-aefc-408e-9aed-13c5c7a81455",
+						"exec": [
+							"pm.test(\"return status code 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/occupations/99216871-834b-4108-9bfc-86e7bc1f5a50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations",
+						"99216871-834b-4108-9bfc-86e7bc1f5a50"
+					]
+				},
+				"description": "should return a http status code 200"
+			},
+			"response": []
+		}
+	]
+}

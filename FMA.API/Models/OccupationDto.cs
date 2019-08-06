@@ -1,15 +1,16 @@
-﻿using System;
+﻿using FMA.API.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FMA.API.Entities
+namespace FMA.API.Models
 {
-    public class Affiliation
+    public class OccupationDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<CharacterAffiliation> KnownMembers { get; set; } = new List<CharacterAffiliation>();
+        public IEnumerable<Character>  Members { get; set; }
     }
 }

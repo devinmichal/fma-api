@@ -22,7 +22,6 @@ namespace FMA.API.Entities
         public Occupation Occupation { get; set; }
         public string Abilities { get; set; }
         public string Weapon { get; set; }
-        public ICollection<CharacterAffiliation> Affiliations { get; set; } = new List<CharacterAffiliation>();
         public string Rank { get; set; }
         public string Goal { get; set; }
         public Guid CountryId { get; set; }

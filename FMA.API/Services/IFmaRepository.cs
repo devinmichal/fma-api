@@ -8,9 +8,12 @@ namespace FMA.API.Services
     {
          IEnumerable<Character> GetCharacters();
         Character GetCharacter(Guid id);
-        IEnumerable<Affiliation> GetAffiliations();
-        Affiliation GetAffiliation(Guid id);
         IEnumerable<Nationality> GetNationalities();
         Nationality GetNationality(Guid id);
+
+        IEnumerable<Occupation> GetOccupations();
+        Occupation GetOccupation(Guid id);
+        IEnumerable<Capital> GetCapitals();
+        Capital GetCapital(Guid id);
     }
 }

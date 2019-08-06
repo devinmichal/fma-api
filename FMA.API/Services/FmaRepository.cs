@@ -41,25 +41,7 @@ namespace FMA.API.Services
                 
         }
 
-       public IEnumerable<Affiliation> GetAffiliations()
-        {
-            var affiliations = _context.Affiliations
-                .Include(a => a.KnownMembers)
-                .ToList();
-
-            return affiliations;
-        }
-
-        public Affiliation GetAffiliation(Guid id)
-        {
-            var affiliation = _context.Affiliations
-                .Include(a => a.KnownMembers)
-                .FirstOrDefault(a => a.Id == id);
-
-            return affiliation;
-
-        }
-
+       
         public IEnumerable<Nationality> GetNationalities()
         {
             var nationalities = _context.Nationalities
@@ -78,6 +60,40 @@ namespace FMA.API.Services
                 .FirstOrDefault(n => n.Id == id);
 
             return nationality;
+        }
+
+        public IEnumerable<Occupation> GetOccupations()
+        {
+            var occupations = _context.Occupations
+                .Include(o => o.Members)
+                .ToList();
+
+            return occupations;
+        }
+
+        public Occupation GetOccupation(Guid id)
+        {
+
+            var occupation = _context.Occupations
+                .Include(o => o.Members)
+                .FirstOrDefault(o => o.Id == id);
+
+            return occupation;
+        }
+        public IEnumerable<Capital> GetCapitals()
+        {
+            var capitals = _context.Capitals
+                .ToList();
+
+            return capitals;
+        }
+
+        public Capital GetCapital(Guid id)
+        {
+            var capital = _context.Capitals
+                .FirstOrDefault(c => c.Id == id);
+
+            return capital;
         }
     }
 }

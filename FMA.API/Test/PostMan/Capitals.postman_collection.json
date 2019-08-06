@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "6708361e-8ae0-4dd2-b44f-538db8916b89",
+		"name": "Capitals",
+		"description": "Requests and tests for the captials outer facing model and contract",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get capitals",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c40d9de-29c0-464a-adc1-d9e3fc2e638b",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "should return status 200"
+			},
+			"response": []
+		},
+		{
+			"name": "Get capital by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2afa6907-5565-45b6-95af-857072da9550",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/capitals/4c793930-8632-48ad-9850-499f74de0853",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"capitals",
+						"4c793930-8632-48ad-9850-499f74de0853"
+					]
+				},
+				"description": "should return status 200"
+			},
+			"response": []
+		},
+		{
+			"name": "get capital by id(bad request)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0afb7834-cb6c-436f-bd71-093f671d0b02",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(404); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/capitals/4c793930-8632-48ad-9850-499f74de0850",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"capitals",
+						"4c793930-8632-48ad-9850-499f74de0850"
+					]
+				},
+				"description": "should return 404 status"
+			},
+			"response": []
+		}
+	]
+}

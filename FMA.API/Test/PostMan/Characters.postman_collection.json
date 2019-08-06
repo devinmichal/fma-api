@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "d6d5eca9-2dbc-4ae0-b8b1-e7f65234f3f9",
+		"name": "Characters",
+		"description": "Requests and tests for the characters outer facing model and contract",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Characters",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2bdb6bc3-4e76-46d9-921d-5f7c21fe2d30",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/characters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"characters"
+					]
+				},
+				"description": "when making an http Get for characters return a http code 200"
+			},
+			"response": []
+		},
+		{
+			"name": "Get character by Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ad1df3e3-9370-408b-a66a-2976e6566295",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"    pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/characters/b8be8110-3841-4064-b0a5-b8987bf8c3b2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"characters",
+						"b8be8110-3841-4064-b0a5-b8987bf8c3b2"
+					]
+				},
+				"description": "return 200 when requesting a valid resource"
+			},
+			"response": []
+		},
+		{
+			"name": "Get character by Id (bad resource)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d69ecf8f-bc87-4a9c-9c98-c0f52cdb3284",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"    pm.response.to.have.status(404)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/characters/b8be8110-3841-4064-b0a5-b8987bf8c3bb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"characters",
+						"b8be8110-3841-4064-b0a5-b8987bf8c3bb"
+					]
+				},
+				"description": "return a 404 status code on a bad resource"
+			},
+			"response": []
+		}
+	]
+}

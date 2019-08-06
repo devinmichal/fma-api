@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "f1d03065-0083-45c5-bae3-379b9af1a390",
+		"name": "Currency",
+		"description": "Requests and test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get currencies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "38550e0d-5b88-4cc6-88b4-133cce8b079d",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/currencies",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"currencies"
+					]
+				},
+				"description": "should return status 200"
+			},
+			"response": []
+		},
+		{
+			"name": "Get currency by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d9315967-0678-4bba-82ef-b39a5be452f5",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/currencies/f268e74c-1840-4835-ae3e-47e6915099ae",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"currencies",
+						"f268e74c-1840-4835-ae3e-47e6915099ae"
+					]
+				},
+				"description": "should return status 200"
+			},
+			"response": []
+		},
+		{
+			"name": "get currency by id (bad request)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96d73b58-06d4-4215-bcc5-003ad94c5dde",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(404); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/currencies/f268e74c-1840-4835-ae3e-47e6915099a5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"currencies",
+						"f268e74c-1840-4835-ae3e-47e6915099a5"
+					]
+				},
+				"description": "should return status 404"
+			},
+			"response": []
+		}
+	]
+}

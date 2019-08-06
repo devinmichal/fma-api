@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "fc063e29-bebe-4739-9c88-1c670dc25160",
+		"name": "Countries",
+		"description": "Requests and tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Countries",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3d0fdcc7-4cbb-430e-b4f0-55c28880e28b",
+						"exec": [
+							"pm.test(\"return status code 200\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/countries",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries"
+					]
+				},
+				"description": "should return status code 200"
+			},
+			"response": []
+		},
+		{
+			"name": "Get country by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8f7f179-326c-42fd-8cd1-8195739e82ec",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(200); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/countries/63891193-dce2-41ee-bdb0-6cfaf69b6d27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"63891193-dce2-41ee-bdb0-6cfaf69b6d27"
+					]
+				},
+				"description": "returns a 200 status"
+			},
+			"response": []
+		},
+		{
+			"name": "Get character by id (bad request)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d9a39d51-be63-4ac5-bc03-911c7ce0fafc",
+						"exec": [
+							"pm.test(\"return status 200\", function(){",
+							"   pm.response.to.have.status(404); ",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:50467/api/countries/63891193-dce2-41ee-bdb0-6cfaf69b6d28",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"63891193-dce2-41ee-bdb0-6cfaf69b6d28"
+					]
+				},
+				"description": "should return a status of 404"
+			},
+			"response": []
+		}
+	]
+}

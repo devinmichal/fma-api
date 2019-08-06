@@ -4,14 +4,16 @@ using FMA.API.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FMA.API.Migrations
 {
     [DbContext(typeof(FmaContext))]
-    partial class FmaContextModelSnapshot : ModelSnapshot
+    [Migration("20190806203706_DropAffiliationsTable")]
+    partial class DropAffiliationsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

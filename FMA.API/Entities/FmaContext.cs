@@ -12,7 +12,7 @@ namespace FMA.API.Entities
             Database.Migrate();
         }
         public DbSet<Character> Characters { get; set; }
-        public DbSet<Affiliation> Affiliations { get; set; }
+       
         public DbSet<Capital> Capitals { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Nationality> Nationalities { get; set; }
@@ -21,18 +21,7 @@ namespace FMA.API.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CharacterAffiliation>().HasKey(s => new { s.MemberId, s.AffiliationId });
-
-            modelBuilder.Entity<CharacterAffiliation>()
-                .HasOne(ca => ca.Affiliation)
-                .WithMany(a => a.KnownMembers)
-                .HasForeignKey(ca => ca.AffiliationId);
-
-            modelBuilder.Entity<CharacterAffiliation>()
-                .HasOne(ca => ca.Member)
-                .WithMany(c => c.Affiliations)
-                .HasForeignKey(ca => ca.MemberId);
-
+            
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Occupation)
                 .WithMany(o => o.Members);
