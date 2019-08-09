@@ -85,7 +85,7 @@
 					"script": {
 						"id": "96d73b58-06d4-4215-bcc5-003ad94c5dde",
 						"exec": [
-							"pm.test(\"return status 200\", function(){",
+							"pm.test(\"return status 404\", function(){",
 							"   pm.response.to.have.status(404); ",
 							"});"
 						],

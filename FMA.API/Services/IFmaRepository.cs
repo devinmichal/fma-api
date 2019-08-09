@@ -15,5 +15,9 @@ namespace FMA.API.Services
         Occupation GetOccupation(Guid id);
         IEnumerable<Capital> GetCapitals();
         Capital GetCapital(Guid id);
+        IEnumerable<Currency> GetCurrencies();
+        Currency GetCurrency(Guid id);
+        IEnumerable<Country> GetCountries();
+        Country GetCountry(Guid id);
     }
 }

@@ -45,15 +45,18 @@ namespace FMA.API.Entities
                     Description = "Central City is the official capital and also the seat of government in Amestris. The National Central Library, Central Command, the 5 National Laboratories, and Amestris' Parliament are all located in Central. Aside from its symbol as a military headquarters, Central is also a bustling metropolis and arguably Amestris' largest city, complete with nearly everything Amestrian society has to offer as well as a lasting and rarely disturbed sense of peace created by its proximity to the government's imposing presence. After the events in the eastern regions of Amestris and the Elrics' excursion to the southern region, much of the Fullmetal Alchemist story takes place in Central, as it also serves as the Homunculi's home base, the heart of which is located deep beneath Central Command Headquarters",
              };
             context.Add(capital);
-            
+
             var country = new Country()
             {
-                    Id = new Guid("63891193-dce2-41ee-bdb0-6cfaf69b6d27"),
-                    Name = "Amestris",
-                    Population = 50000000,
-                    CapitalId = new Guid("4c793930-8632-48ad-9850-499f74de0853"),
-                    NationalityId = new Guid("900f6350-82c5-4e5d-aff3-1b74adf3612d"),
-                    CurrencyId = new Guid("f268e74c-1840-4835-ae3e-47e6915099ae")
+                Id = new Guid("63891193-dce2-41ee-bdb0-6cfaf69b6d27"),
+                Name = "Amestris",
+                Population = 50000000,
+                CapitalId = new Guid("4c793930-8632-48ad-9850-499f74de0853"),
+                NationalityId = new Guid("900f6350-82c5-4e5d-aff3-1b74adf3612d"),
+                CurrencyId = new Guid("f268e74c-1840-4835-ae3e-47e6915099ae"),
+                Government = "Parliamentary",
+                Founded = 1550
+                
               };
             context.Add(country);
            

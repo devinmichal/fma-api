@@ -95,5 +95,46 @@ namespace FMA.API.Services
 
             return capital;
         }
+
+        public IEnumerable<Currency> GetCurrencies()
+        {
+            var currencies = _context.Currencies
+                .ToList();
+
+            return currencies;
+        }
+
+        public Currency GetCurrency(Guid id)
+        {
+            var currency = _context.Currencies
+                .FirstOrDefault(c => c.Id == id);
+
+            return currency;
+        }
+
+        public IEnumerable<Country> GetCountries()
+        {
+            var countries = _context.Countries
+                .Include(c => c.Governor)
+                .Include(c => c.Nationality)
+                .Include(c => c.Capital)
+                .Include(c => c.Currency)
+                .ToList();
+
+            return countries;
+        }
+
+        public Country GetCountry(Guid id)
+        {
+            var country = _context.Countries
+                .Include(c => c.Governor)
+                .Include(c => c.Nationality)
+                .Include(c => c.Capital)
+                .Include(c => c.Currency)
+                .FirstOrDefault(c => c.Id == id);
+
+            return country;
+                
+        }
     }
 }
