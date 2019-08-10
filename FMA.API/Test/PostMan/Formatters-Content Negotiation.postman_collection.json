@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "14f432c0-153e-404d-915a-d9388c8d3eff",
+		"name": "Formatters/Content Negotiation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Invalid Accept Header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "97ff0961-f6ec-4e36-9352-e1f84b35551a",
+						"exec": [
+							"pm.test(\"return status 406\", function() {",
+							"    pm.response.to.have.status(406)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/javascript",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:50467/api/characters",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"characters"
+					]
+				},
+				"description": "With a non accepted output format should return http status 406"
+			},
+			"response": []
+		}
+	]
+}
