@@ -19,5 +19,9 @@ namespace FMA.API.Services
         Currency GetCurrency(Guid id);
         IEnumerable<Country> GetCountries();
         Country GetCountry(Guid id);
+
+        Character AddCharacter(Character character);
+
+        Boolean Save();
     }
 }

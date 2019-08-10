@@ -16,6 +16,18 @@ namespace FMA.API.Services
             _context = context;
         }
 
+     
+        public Character AddCharacter(Character character)
+        {
+            character.Id = Guid.NewGuid();
+            character.NationalityId = character.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ?  new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.NationalityId;
+            character.OccupationId = character.OccupationId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.OccupationId;
+            character.CountryId = character.CountryId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.CountryId;
+
+            _context.Add(character);
+
+            return character;
+        }
         public IEnumerable<Character> GetCharacters()
         {
             var characters = _context.Characters
@@ -135,6 +147,15 @@ namespace FMA.API.Services
 
             return country;
                 
+        }
+
+        public Boolean Save()
+        {
+            if(_context.SaveChanges() == 0)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

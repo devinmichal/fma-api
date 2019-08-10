@@ -24,7 +24,7 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult getCharacters()
+        public IActionResult GetCharacters()
         {
             var charactersFromRepo = _fmaRepository.GetCharacters();
             var characters = Mapper.Map<IEnumerable<Character>,IEnumerable<CharacterDto>>(charactersFromRepo);
@@ -34,7 +34,7 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult getCharacter(Guid id)
+        public IActionResult GetCharacter(Guid id)
         {
             var characterFromRepo = _fmaRepository.GetCharacter(id);
             if(characterFromRepo == null)
@@ -44,6 +44,27 @@ namespace FMA.API.Controllers
 
             var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
             return Ok(character);
+        }
+        [HttpPost("")]
+        public IActionResult CreateCharacter([FromBody]CharacterToCreateDto characterDto)
+        {
+            if (characterDto == null)
+            {
+                return BadRequest();
+            }
+
+            var characterEntity = Mapper.Map<Character>(characterDto);
+
+           var createdCharacter = _fmaRepository.AddCharacter(characterEntity);
+
+            if(!_fmaRepository.Save()) {
+
+                return StatusCode(500, "An error saving resource");
+            }
+
+            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(createdCharacter);
+
+            return Created("",outerFacingModelCharacter);
         }
         
     }

@@ -94,6 +94,8 @@ namespace FMA.API
                 .ForMember(dest => dest.Govenor, opt => opt.MapFrom(src => $"{src.Governor.FirstName} {src.Governor.LastName}"))
                 .ForMember(dest => dest.Nationality, opt => opt.MapFrom(src => src.Nationality.Name))
                 .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency.Name));
+
+                ctg.CreateMap<CharacterToCreateDto, Character>();
                 
 
 
