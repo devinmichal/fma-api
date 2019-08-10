@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using FMA.API.Controllers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace FMA.API
 {
@@ -32,6 +33,10 @@ namespace FMA.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc(setupAction => {
+                setupAction.ReturnHttpNotAcceptable = true;
+                setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            });
 
             services.AddDbContext<FmaContext>(options =>
            {
