@@ -25,7 +25,6 @@ namespace FMA.API.Entities
             modelBuilder.Entity<Character>()
                 .HasOne(c => c.Occupation)
                 .WithMany(o => o.Members);
-
             modelBuilder.Entity<Character>()
                .HasOne(c => c.Nationality)
                .WithMany(n => n.Members);

@@ -16,13 +16,27 @@ namespace FMA.API.Services
             _context = context;
         }
 
-     
+        public Boolean CharacterExist(Character character)
+        {
+            var characters = _context.Characters.ToDictionary(keySelector => keySelector.FirstName.ToLower() + keySelector.LastName.ToLower() + keySelector.Age.ToString());
+            var boolean = characters.ContainsKey(character.FirstName.Trim().ToLower() + character.LastName.Trim().ToLower() + character.Age.ToString());
+
+            return boolean;
+           
+        }
+
+        public Boolean CharacterExist(Guid id)
+        {
+            var boolean = _context.Characters.Any(c => c.Id == id);
+
+            return boolean;
+        }
         public Character AddCharacter(Character character)
         {
             character.Id = Guid.NewGuid();
-            character.NationalityId = character.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ?  new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.NationalityId;
+           /* character.NationalityId = character.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ?  new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.NationalityId;
             character.OccupationId = character.OccupationId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.OccupationId;
-            character.CountryId = character.CountryId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.CountryId;
+            character.CountryId = character.CountryId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.CountryId; */
 
             _context.Add(character);
 
@@ -34,6 +48,7 @@ namespace FMA.API.Services
                 .Include(c => c.Nationality)
                 .Include(c => c.Occupation)
                 .Include(c => c.Country)
+                //.Include(c => c.FamilyMembers)
                 .ToList();
                 
 
@@ -147,6 +162,29 @@ namespace FMA.API.Services
 
             return country;
                 
+        }
+
+        public Country AddCountry(Country country)
+        {
+            country.Id = Guid.NewGuid();
+          /*  country.CapitalId = country.CapitalId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.CapitalId;
+            country.CurrencyId = country.CurrencyId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.CurrencyId;
+            country.NationalityId = country.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.NationalityId; */
+            _context.Add(country);
+
+            return country;
+        }
+
+        public Boolean CountryExist(Country country)
+        {
+            var countries = _context.Countries
+                .ToList();
+               
+                var boolean = countries
+                .Any(c => c.Name.ToLower().Contains(country.Name.ToLower()) && c.Government.ToLower().Contains(country.Government.ToLower()));
+
+
+            return boolean;
         }
 
         public Boolean Save()

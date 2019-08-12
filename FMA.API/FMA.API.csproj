@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190810182359_changeCharacterCharacterEntity.cs" />
+    <Compile Remove="Migrations\20190810182359_changeCharacterCharacterEntity.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

@@ -96,6 +96,7 @@ namespace FMA.API
                 .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency.Name));
 
                 ctg.CreateMap<CharacterToCreateDto, Character>();
+                ctg.CreateMap<CountryToCreateDto, Country>();
                 
 
 

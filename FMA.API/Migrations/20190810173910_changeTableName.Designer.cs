@@ -4,14 +4,16 @@ using FMA.API.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FMA.API.Migrations
 {
     [DbContext(typeof(FmaContext))]
-    partial class FmaContextModelSnapshot : ModelSnapshot
+    [Migration("20190810173910_changeTableName")]
+    partial class changeTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +46,7 @@ namespace FMA.API.Migrations
 
                     b.Property<string>("Aliases");
 
-                    b.Property<Guid?>("CountryId");
+                    b.Property<Guid>("CountryId");
 
                     b.Property<string>("FirstName");
 
@@ -52,9 +54,9 @@ namespace FMA.API.Migrations
 
                     b.Property<string>("LastName");
 
-                    b.Property<Guid?>("NationalityId");
+                    b.Property<Guid>("NationalityId");
 
-                    b.Property<Guid?>("OccupationId");
+                    b.Property<Guid>("OccupationId");
 
                     b.Property<string>("Rank");
 
@@ -71,14 +73,31 @@ namespace FMA.API.Migrations
                     b.ToTable("Characters");
                 });
 
+            modelBuilder.Entity("FMA.API.Entities.CharacterCharacter", b =>
+                {
+                    b.Property<Guid>("Id");
+
+                    b.Property<Guid>("Id2");
+
+                    b.Property<Guid?>("FamilyMember2Id");
+
+                    b.HasKey("Id", "Id2");
+
+                    b.HasIndex("FamilyMember2Id");
+
+                    b.HasIndex("Id2");
+
+                    b.ToTable("FamilyMembers");
+                });
+
             modelBuilder.Entity("FMA.API.Entities.Country", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("CapitalId");
+                    b.Property<Guid>("CapitalId");
 
-                    b.Property<Guid?>("CurrencyId");
+                    b.Property<Guid>("CurrencyId");
 
                     b.Property<int>("Founded");
 
@@ -88,25 +107,22 @@ namespace FMA.API.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("NationalityId");
+                    b.Property<Guid>("NationalityId");
 
                     b.Property<int>("Population");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CapitalId")
-                        .IsUnique()
-                        .HasFilter("[CapitalId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("CurrencyId")
-                        .IsUnique()
-                        .HasFilter("[CurrencyId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("GovernorId");
 
                     b.HasIndex("NationalityId")
-                        .IsUnique()
-                        .HasFilter("[NationalityId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Countries");
                 });
@@ -155,26 +171,43 @@ namespace FMA.API.Migrations
                 {
                     b.HasOne("FMA.API.Entities.Country", "Country")
                         .WithMany()
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FMA.API.Entities.Nationality", "Nationality")
                         .WithMany("Members")
-                        .HasForeignKey("NationalityId");
+                        .HasForeignKey("NationalityId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FMA.API.Entities.Occupation", "Occupation")
                         .WithMany("Members")
-                        .HasForeignKey("OccupationId");
+                        .HasForeignKey("OccupationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FMA.API.Entities.CharacterCharacter", b =>
+                {
+                    b.HasOne("FMA.API.Entities.Character", "FamilyMember2")
+                        .WithMany()
+                        .HasForeignKey("FamilyMember2Id");
+
+                    b.HasOne("FMA.API.Entities.Character", "FamilyMember")
+                        .WithMany("FamilyMembers")
+                        .HasForeignKey("Id2")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("FMA.API.Entities.Country", b =>
                 {
                     b.HasOne("FMA.API.Entities.Capital", "Capital")
                         .WithOne("Country")
-                        .HasForeignKey("FMA.API.Entities.Country", "CapitalId");
+                        .HasForeignKey("FMA.API.Entities.Country", "CapitalId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FMA.API.Entities.Currency", "Currency")
                         .WithOne("Country")
-                        .HasForeignKey("FMA.API.Entities.Country", "CurrencyId");
+                        .HasForeignKey("FMA.API.Entities.Country", "CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("FMA.API.Entities.Character", "Governor")
                         .WithMany()
@@ -182,7 +215,8 @@ namespace FMA.API.Migrations
 
                     b.HasOne("FMA.API.Entities.Nationality", "Nationality")
                         .WithOne("Country")
-                        .HasForeignKey("FMA.API.Entities.Country", "NationalityId");
+                        .HasForeignKey("FMA.API.Entities.Country", "NationalityId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

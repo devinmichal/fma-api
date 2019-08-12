@@ -21,6 +21,10 @@ namespace FMA.API.Services
         Country GetCountry(Guid id);
 
         Character AddCharacter(Character character);
+        Boolean CharacterExist(Character character);
+        Boolean CharacterExist(Guid id);
+        Country AddCountry(Country country);
+        Boolean CountryExist(Country country);
 
         Boolean Save();
     }

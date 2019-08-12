@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FMA.API.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,5 +19,6 @@ namespace FMA.API.Models
         public string Goal { get; set; }
         public string Occupation { get; set; }
         public string Country { get; set; }
+        
     }
 }

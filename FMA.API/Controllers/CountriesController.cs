@@ -43,5 +43,33 @@ namespace FMA.API.Controllers
 
             return Ok(outerFacingModelCountry);
         }
+
+        [HttpPost]
+        public IActionResult CreateCountry([FromBody] CountryToCreateDto countryDto)
+        {
+            if (countryDto == null)
+            {
+                return BadRequest();
+            }
+
+            var countryToBeCreated = Mapper.Map<Country>(countryDto);
+
+            if(_fmaRepository.CountryExist(countryToBeCreated))
+            {
+                return StatusCode(422, new { message = "Country already exists" });
+            }
+
+            var createdCountry = _fmaRepository.AddCountry(countryToBeCreated);
+
+            if (!_fmaRepository.Save())
+            {
+
+                return StatusCode(500, "An error saving resource");
+            }
+
+            var outerFacingModelCountry = Mapper.Map<CountryDto>(createdCountry);
+
+            return Created("", outerFacingModelCountry);
+        }
     }
 }

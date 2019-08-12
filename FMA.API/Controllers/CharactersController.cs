@@ -33,7 +33,7 @@ namespace FMA.API.Controllers
             return Ok(characters);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCharacter")]
         public IActionResult GetCharacter(Guid id)
         {
             var characterFromRepo = _fmaRepository.GetCharacter(id);
@@ -53,9 +53,16 @@ namespace FMA.API.Controllers
                 return BadRequest();
             }
 
-            var characterEntity = Mapper.Map<Character>(characterDto);
+            var characterToBeCreated = Mapper.Map<Character>(characterDto);
 
-           var createdCharacter = _fmaRepository.AddCharacter(characterEntity);
+            var exist = _fmaRepository.CharacterExist(characterToBeCreated);
+
+            if(exist)
+            {
+                return StatusCode(422, "Character already exists");
+            }
+
+           var createdCharacter = _fmaRepository.AddCharacter(characterToBeCreated);
 
             if(!_fmaRepository.Save()) {
 
@@ -66,6 +73,8 @@ namespace FMA.API.Controllers
 
             return Created("",outerFacingModelCharacter);
         }
+
+       
         
     }
 }
