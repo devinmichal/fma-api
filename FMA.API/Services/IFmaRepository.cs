@@ -25,6 +25,10 @@ namespace FMA.API.Services
         Boolean CharacterExist(Guid id);
         Country AddCountry(Country country);
         Boolean CountryExist(Country country);
+        Boolean CountryExist(Guid id);
+        Capital AddCapital(Capital capital , Guid countryId);
+        Boolean CapitalExist(Capital capital);
+        
 
         Boolean Save();
     }

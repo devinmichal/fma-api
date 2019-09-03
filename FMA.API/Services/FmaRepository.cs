@@ -107,6 +107,30 @@ namespace FMA.API.Services
 
             return occupation;
         }
+
+        public Capital AddCapital(Capital capital, Guid countryId) {
+
+            var country = GetCountry(countryId);
+
+            capital.Id = Guid.NewGuid();
+
+            country.CapitalId = capital.Id;
+
+            _context.Update(country);
+            _context.Add(capital);
+
+            return capital;
+        }
+
+        public Boolean CapitalExist(Capital capital)
+        {
+            var capitals = _context.Capitals.ToList();
+
+            var boolean = capitals
+                .Any(c => c.Name.ToLower().Contains(capital.Name.ToLower()));
+
+            return boolean;
+        }
         public IEnumerable<Capital> GetCapitals()
         {
             var capitals = _context.Capitals
@@ -183,6 +207,16 @@ namespace FMA.API.Services
                 var boolean = countries
                 .Any(c => c.Name.ToLower().Contains(country.Name.ToLower()) && c.Government.ToLower().Contains(country.Government.ToLower()));
 
+
+            return boolean;
+        }
+
+        public Boolean CountryExist(Guid id)
+        {
+            var countries = _context.Countries.ToList();
+
+            var boolean = countries
+                .Any(c => c.Id == id);
 
             return boolean;
         }
