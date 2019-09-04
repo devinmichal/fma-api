@@ -87,7 +87,7 @@
 					"script": {
 						"id": "bf1598d0-aefc-408e-9aed-13c5c7a81455",
 						"exec": [
-							"pm.test(\"return status code 404\", function(){",
+							"pm.test(\"return status code 200\", function(){",
 							"    pm.response.to.have.status(200)",
 							"});"
 						],
@@ -112,6 +112,144 @@
 					]
 				},
 				"description": "should return a http status code 200"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Occupation(no resource)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf1598d0-aefc-408e-9aed-13c5c7a81455",
+						"exec": [
+							"pm.test(\"return status code 400\", function(){",
+							"    pm.response.to.have.status(400)",
+							"});",
+							"pm.test(\"Response body has message\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"Need resource in the body\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:50467/api/occupations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations"
+					]
+				},
+				"description": "should return a http status code 400 with message"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Occupation(duplicate resource)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf1598d0-aefc-408e-9aed-13c5c7a81455",
+						"exec": [
+							"pm.test(\"return status code 422\", function(){",
+							"    pm.response.to.have.status(422)",
+							"});",
+							"pm.test(\"Response body has message\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"Resource already exist\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"State Alchemist\",\n\t\"description\" : \"this is a test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/occupations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations"
+					]
+				},
+				"description": "should return a http status code 422 with message"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Occupation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bf1598d0-aefc-408e-9aed-13c5c7a81455",
+						"exec": [
+							"pm.test(\"return status code 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"test\",\n\t\"description\" : \"this is a test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/occupations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"occupations"
+					]
+				},
+				"description": "should return a http status code 201"
 			},
 			"response": []
 		}

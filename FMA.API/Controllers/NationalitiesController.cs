@@ -10,7 +10,7 @@ using FMA.API.Models;
 
 namespace FMA.API.Controllers
 {
-    [Route("api/nationalities")]
+    [Route("api/")]
     public class NationalitiesController : Controller
     {
         private IFmaRepository _fmaRepository;
@@ -19,7 +19,7 @@ namespace FMA.API.Controllers
             _fmaRepository = fmaRepository;
         }
 
-        [HttpGet()]
+        [HttpGet("nationalities")]
         public IActionResult GetNationalities()
         {
             var nationalitiesFromRepo = _fmaRepository.GetNationalities();
@@ -29,7 +29,7 @@ namespace FMA.API.Controllers
             return Ok(nationalities);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("nationalities/{id}")]
         public IActionResult GetNationality(Guid id)
         {
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
@@ -41,6 +41,42 @@ namespace FMA.API.Controllers
             var nationality = Mapper.Map<Nationality, NationalityDto>(nationalityFromRepo);
 
             return Ok(nationality);
+        }
+
+        [HttpPost("countries/{countryId}/nationalities")]
+        public IActionResult CreateNationality([FromRoute] Guid countryId, [FromBody] NationalityToCreateDto nationalityToCreateDto)
+        {
+           
+            if(nationalityToCreateDto == null)
+            {
+                return BadRequest(new { message = "Need resource in the body"});
+            }
+
+           
+            if(!_fmaRepository.CountryExist(countryId))
+            {
+                return NotFound(new { message = "Country doesn't exist"});
+            }
+
+            var nationalityToBeCreated = Mapper.Map<Nationality>(nationalityToCreateDto);
+
+          
+            if (_fmaRepository.NationalityExist(nationalityToBeCreated))
+            {
+                return StatusCode(422, new { message = "Resource already exist. Cannot create." });
+            }
+
+           
+           var createdNationality =  _fmaRepository.AddNationality(nationalityToBeCreated, countryId);
+        
+            if (!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Cannot save resource." });
+            }
+            
+            var outerFacingModelNationality = Mapper.Map<NationalityDto>(createdNationality);
+
+            return Created("", outerFacingModelNationality);
         }
     }
 }

@@ -88,7 +88,29 @@ namespace FMA.API.Services
 
             return nationality;
         }
+        public Boolean NationalityExist(Nationality nationality)
+        {
+            var nationalities = _context.Nationalities
+                .ToList();
 
+            var boolean = nationalities.
+                Any(n => n.Name.ToLower().Contains(nationality.Name.ToLower()));
+
+            return boolean;
+        }
+
+        public Nationality AddNationality(Nationality nationality, Guid countryId)
+        {
+            nationality.Id = Guid.NewGuid();
+
+            var country = GetCountry(countryId);
+            country.NationalityId = nationality.Id;
+
+            _context.Update(country);
+            _context.Add(nationality);
+
+            return nationality;
+        }
         public IEnumerable<Occupation> GetOccupations()
         {
             var occupations = _context.Occupations
@@ -104,6 +126,23 @@ namespace FMA.API.Services
             var occupation = _context.Occupations
                 .Include(o => o.Members)
                 .FirstOrDefault(o => o.Id == id);
+
+            return occupation;
+        }
+
+        public Boolean OccupationExist(Occupation occupation)
+        {
+            var occupations = _context.Occupations.ToList();
+            var boolean = occupations
+                .Any(o => o.Name.ToLower().Contains(occupation.Name.ToLower()));
+
+            return boolean;
+        }
+
+        public Occupation AddOccupation(Occupation occupation)
+        {
+            occupation.Id = Guid.NewGuid();
+            _context.Add(occupation);
 
             return occupation;
         }

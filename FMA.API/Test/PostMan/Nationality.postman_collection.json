@@ -112,6 +112,200 @@
 				"description": "should return 404 status"
 			},
 			"response": []
+		},
+		{
+			"name": "Post Nationality (no http body)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e623df9b-a25b-426e-9fee-c3a45dab216a",
+						"exec": [
+							"pm.test(\"return status 400\", function(){",
+							"    pm.response.to.have.status(400)",
+							"})",
+							"pm.test(\"body should have a message\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"Need resource in the body\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:50467/api/countries/id/nationalities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"id",
+						"nationalities"
+					]
+				},
+				"description": "should return a 400 status with a message"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Nationality (bad coountry id) ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e623df9b-a25b-426e-9fee-c3a45dab216a",
+						"exec": [
+							"pm.test(\"return status 404\", function(){",
+							"    pm.response.to.have.status(404)",
+							"})",
+							"pm.test(\"body should have a message\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"Country doesn't exist\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561298/nationalities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561298",
+						"nationalities"
+					]
+				},
+				"description": "should return a 404 status with a message"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Nationality (Duplicate Nationality) ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e623df9b-a25b-426e-9fee-c3a45dab216a",
+						"exec": [
+							"pm.test(\"return status 422\", function(){",
+							"    pm.response.to.have.status(422)",
+							"})",
+							"pm.test(\"body should have a message\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"Resource already exist. Cannot create.\")",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Amestrian\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561291/nationalities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561291",
+						"nationalities"
+					]
+				},
+				"description": "should return a 422 status with a message"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Nationality ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e623df9b-a25b-426e-9fee-c3a45dab216a",
+						"exec": [
+							"pm.test(\"return status 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"test\""
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561291/nationalities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561291",
+						"nationalities"
+					]
+				},
+				"description": "should return a 201 status"
+			},
+			"response": []
 		}
 	]
 }

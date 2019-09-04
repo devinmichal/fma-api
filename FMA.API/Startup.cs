@@ -98,6 +98,8 @@ namespace FMA.API
                 ctg.CreateMap<CharacterToCreateDto, Character>();
                 ctg.CreateMap<CountryToCreateDto, Country>();
                 ctg.CreateMap<CapitalToCreateDto, Capital>();
+                ctg.CreateMap<NationalityToCreateDto, Nationality>();
+                ctg.CreateMap<OccupationToCreateDto, Occupation>();
                 
 
 

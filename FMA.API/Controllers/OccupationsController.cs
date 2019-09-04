@@ -42,5 +42,27 @@ namespace FMA.API.Controllers
             var outFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
             return Ok(outFacingModelOccupation);
         }
+
+        [HttpPost()]
+        public IActionResult CreateOccupation([FromBody] OccupationToCreateDto occupationToCreateDto)
+        {
+            if(occupationToCreateDto == null)
+            {
+                return BadRequest(new { message = "Need resource in the body" });
+            }
+
+            var occupationToCreate = Mapper.Map<Occupation>(occupationToCreateDto);
+
+            if(_fmaRepository.OccupationExist(occupationToCreate))
+            {
+                return StatusCode(422, new { message = "Resource already exist" });
+            }
+
+            var createdOccupation = _fmaRepository.AddOccupation(occupationToCreate);
+
+            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(createdOccupation);
+
+            return Created("", outerFacingModelOccupation);
+        }
     }
 }

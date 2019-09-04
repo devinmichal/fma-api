@@ -28,6 +28,10 @@ namespace FMA.API.Services
         Boolean CountryExist(Guid id);
         Capital AddCapital(Capital capital , Guid countryId);
         Boolean CapitalExist(Capital capital);
+        Boolean NationalityExist(Nationality nationality);
+        Nationality AddNationality(Nationality nationality, Guid countryId);
+        Boolean OccupationExist(Occupation occupation);
+        Occupation AddOccupation(Occupation occupation);
         
 
         Boolean Save();

@@ -103,6 +103,202 @@
 				"description": "should return 404 status"
 			},
 			"response": []
+		},
+		{
+			"name": "Post Capital",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f792acfc-a311-4f58-a551-46af054f4489",
+						"exec": [
+							"pm.test(\"return status 201\", function(){",
+							"    pm.response.to.have.status(201)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"Name\" : \"test\",\n  \"Description\": \"this is a test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561291/capitals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561291",
+						"capitals"
+					]
+				},
+				"description": "should return a 201 created"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capital (bad country id)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f792acfc-a311-4f58-a551-46af054f4489",
+						"exec": [
+							"pm.test(\"return status 404\", function(){",
+							"    pm.response.to.have.status(404)",
+							"    ",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Country doesn't exist\");",
+							"});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"Name\" : \"test\",\n  \"Description\": \"this is a test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561298/capitals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561298",
+						"capitals"
+					]
+				},
+				"description": "should return a 404"
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capital (duplicate capital name) ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f792acfc-a311-4f58-a551-46af054f4489",
+						"exec": [
+							"pm.test(\"return status 422\", function(){",
+							"    pm.response.to.have.status(422)",
+							"    ",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Capital already exist\");",
+							"});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"Name\" : \"Central City\",\n  \"Description\": \"this is a test\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561291/capitals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561291",
+						"capitals"
+					]
+				},
+				"description": "should return a 422 with message \"capital already exists\""
+			},
+			"response": []
+		},
+		{
+			"name": "Post Capital (duplicate capital name)  Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f792acfc-a311-4f58-a551-46af054f4489",
+						"exec": [
+							"pm.test(\"return status 400\", function(){",
+							"    pm.response.to.have.status(400)",
+							"    ",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Need resource in the body\");",
+							"});",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:50467/api/countries/0a872c12-38e6-4ca4-67a3-08d71d561291/capitals",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "50467",
+					"path": [
+						"api",
+						"countries",
+						"0a872c12-38e6-4ca4-67a3-08d71d561291",
+						"capitals"
+					]
+				},
+				"description": "should return a 422 with message \"capital already exists\""
+			},
+			"response": []
 		}
 	]
 }
