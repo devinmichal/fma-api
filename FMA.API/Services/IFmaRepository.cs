@@ -1,4 +1,5 @@
 ﻿using FMA.API.Entities;
+using FMA.API.Models;
 using System;
 using System.Collections.Generic;
 
@@ -6,8 +7,9 @@ namespace FMA.API.Services
 {
    public interface IFmaRepository
     {
-         IEnumerable<Character> GetCharacters();
-        Character GetCharacter(Guid id);
+         IEnumerable<CharacterDto> GetCharacters();
+        IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids);
+        CharacterDto GetCharacter(Guid id);
         IEnumerable<Nationality> GetNationalities();
         Nationality GetNationality(Guid id);
 

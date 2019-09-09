@@ -36,6 +36,7 @@ namespace FMA.API
             services.AddMvc(setupAction => {
                 setupAction.ReturnHttpNotAcceptable = true;
                 setupAction.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+                setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
             });
 
             services.AddDbContext<FmaContext>(options =>
@@ -46,6 +47,7 @@ namespace FMA.API
             services.AddScoped<IFmaRepository, FmaRepository>();
           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

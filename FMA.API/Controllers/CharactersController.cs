@@ -27,10 +27,10 @@ namespace FMA.API.Controllers
         public IActionResult GetCharacters()
         {
             var charactersFromRepo = _fmaRepository.GetCharacters();
-            var characters = Mapper.Map<IEnumerable<Character>,IEnumerable<CharacterDto>>(charactersFromRepo);
+            //var characters = Mapper.Map<IEnumerable<Character>,IEnumerable<CharacterDto>>(charactersFromRepo);
             
             
-            return Ok(characters);
+            return Ok(charactersFromRepo);
         }
 
         [HttpGet("{id}", Name = "GetCharacter")]
@@ -42,8 +42,8 @@ namespace FMA.API.Controllers
                 return NotFound();
             }
 
-            var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
-            return Ok(character);
+           // var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
+            return Ok(characterFromRepo);
         }
         [HttpPost("")]
         public IActionResult CreateCharacter([FromBody]CharacterToCreateDto characterDto)
@@ -74,7 +74,16 @@ namespace FMA.API.Controllers
             return Created("",outerFacingModelCharacter);
         }
 
-       
+       [HttpPost("{id}")]
+       public IActionResult BlockCharacterCreate([FromRoute] Guid id)
+        {
+            if(_fmaRepository.CharacterExist(id))
+            {
+                return StatusCode(422, new { message = "Resource already exist"});
+            }
+
+            return NotFound();
+        }
         
     }
 }

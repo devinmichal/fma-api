@@ -137,8 +137,27 @@ namespace FMA.API.Entities
 
             };
            
+            for(int i = 0; i < 5000; i++)
+            {
+
+                character.Add(new Character()
+                {
+                    Id = Guid.NewGuid(),
+                    NationalityId = new Guid("900f6350-82c5-4e5d-aff3-1b74adf3612d"),
+                    OccupationId = new Guid("99216871-834b-4108-9bfc-86e7bc1f5a50"),
+                    Age = i,
+                    Abilities = "Flame-Based Alchemy",
+                    Weapon = "Ignition Cloth Gloves",
+                    Rank = "Lieutenant Colonel",
+                    Goal = "Becoming Fuhrer",
+                    FirstName = "Roy" + i.ToString(),
+                    LastName = "Mustang" + i.ToString(),
+                    Aliases = "Flame Alchemist,Hero of Ishbal,Roy-Boy, Chief",
+                    CountryId = new Guid("63891193-dce2-41ee-bdb0-6cfaf69b6d27"),
+                });
+            }
             context.AddRange(character);
-            context.SaveChanges();
+             context.SaveChanges();
         } 
     }
 }

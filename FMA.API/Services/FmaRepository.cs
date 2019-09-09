@@ -1,8 +1,12 @@
 ﻿using FMA.API.Entities;
+using FMA.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FMA.API.Services
@@ -25,46 +29,118 @@ namespace FMA.API.Services
            
         }
 
-        public Boolean CharacterExist(Guid id)
+        public bool CharacterExist(Guid id)
         {
-            var boolean = _context.Characters.Any(c => c.Id == id);
+            using (_context) {
 
-            return boolean;
+                 var boolean = _context.Characters.Any(c => c.Id == id);
+
+                     return boolean;    
+
+            }
         }
         public Character AddCharacter(Character character)
         {
-            character.Id = Guid.NewGuid();
-           /* character.NationalityId = character.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ?  new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.NationalityId;
-            character.OccupationId = character.OccupationId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.OccupationId;
-            character.CountryId = character.CountryId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : character.CountryId; */
 
+            character.Id = Guid.NewGuid();
+          
             _context.Add(character);
 
             return character;
         }
-        public IEnumerable<Character> GetCharacters()
+        public IEnumerable<CharacterDto> GetCharacters()
         {
-            var characters = _context.Characters
-                .Include(c => c.Nationality)
-                .Include(c => c.Occupation)
-                .Include(c => c.Country)
-                //.Include(c => c.FamilyMembers)
-                .ToList();
-                
-
-            return characters;
+            using (_context)
+            {
+                 var characters =
+                 _context.Characters
+                 .Select(c =>
+                     new CharacterDto()
+                     {
+                         Id = c.Id,
+                         FullName = c.FirstName + " " + c.LastName,
+                         Abilities = c.Abilities,
+                         Age = c.Age.ToString(),
+                         Aliases = c.Aliases,
+                         Country = c.Country.Name,
+                         Goal = c.Goal,
+                         Nationality = c.Nationality.Name,
+                         Occupation = c.Occupation.Name,
+                         Rank = c.Rank,
+                         Weapon = c.Weapon
+                     })
+                 .AsNoTracking()
+                 .ToList();
+                 
+                return characters;
+            }
         }
 
-        public Character GetCharacter(Guid id)
+        public IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids)
         {
-            var character = _context.Characters
-                .Include(c => c.Nationality)
-                .Include(c => c.Occupation)
-                .Include(c => c.Country)
-                .FirstOrDefault(c => c.Id == id);
+         
+            using (_context)
+            {
+                var characters =
+                _context.Characters
+            .Where(c => ids.Contains(c.Id))
+            .Select(c =>
+                new CharacterDto()
+                {
+                    Id = c.Id,
+                    FullName = c.FirstName + " " + c.LastName,
+                    Abilities = c.Abilities,
+                    Age = c.Age.ToString(),
+                    Aliases = c.Aliases,
+                    Country = c.Country.Name,
+                    Goal = c.Goal,
+                    Nationality = c.Nationality.Name,
+                    Occupation = c.Occupation.Name,
+                    Rank = c.Rank,
+                    Weapon = c.Weapon
+                })
+                .AsNoTracking()
+                .ToList();
+   
+                return characters;
+            }
+           
 
-            return character;
                 
+
+          
+                
+        }
+        public CharacterDto GetCharacter(Guid id)
+        {
+
+            using (_context)
+            {
+                var character = _context.Characters
+                    .Where(c => c.Id == id)
+                       .Select(c =>
+                    new CharacterDto()
+                    {
+                        Id = c.Id,
+                        FullName = c.FirstName + " " + c.LastName,
+                        Abilities = c.Abilities,
+                        Age = c.Age.ToString(),
+                        Aliases = c.Aliases,
+                        Country = c.Country.Name,
+                        Goal = c.Goal,
+                        Nationality = c.Nationality.Name,
+                        Occupation = c.Occupation.Name,
+                        Rank = c.Rank,
+                        Weapon = c.Weapon
+                    }
+                    )
+                    .AsNoTracking()
+                    .Single();
+
+
+
+                return character;
+            }
                 
         }
 
@@ -230,9 +306,6 @@ namespace FMA.API.Services
         public Country AddCountry(Country country)
         {
             country.Id = Guid.NewGuid();
-          /*  country.CapitalId = country.CapitalId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.CapitalId;
-            country.CurrencyId = country.CurrencyId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.CurrencyId;
-            country.NationalityId = country.NationalityId == new Guid("00000000-0000-0000-0000-000000000000") ? new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291") : country.NationalityId; */
             _context.Add(country);
 
             return country;
@@ -252,21 +325,25 @@ namespace FMA.API.Services
 
         public Boolean CountryExist(Guid id)
         {
-            var countries = _context.Countries.ToList();
 
-            var boolean = countries
-                .Any(c => c.Id == id);
+            using (_context)
+            {
+                var boolean = _context.Countries.Any(c => c.Id == id);
 
-            return boolean;
+                return boolean;
+            }
         }
 
         public Boolean Save()
         {
-            if(_context.SaveChanges() == 0)
+            using (_context)
             {
-                return false;
+                if (_context.SaveChanges() == 0)
+                {
+                    return false;
+                }
+                return true;
             }
-            return true;
         }
     }
 }
