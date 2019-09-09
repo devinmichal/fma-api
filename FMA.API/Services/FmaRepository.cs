@@ -31,13 +31,12 @@ namespace FMA.API.Services
 
         public bool CharacterExist(Guid id)
         {
-            using (_context) {
-
+           
                  var boolean = _context.Characters.Any(c => c.Id == id);
 
                      return boolean;    
 
-            }
+            
         }
         public Character AddCharacter(Character character)
         {
@@ -48,10 +47,15 @@ namespace FMA.API.Services
 
             return character;
         }
+
+        public void DeleteCharacter(Character character)
+        {
+            _context.Remove(character);
+        }
+
         public IEnumerable<CharacterDto> GetCharacters()
         {
-            using (_context)
-            {
+           
                  var characters =
                  _context.Characters
                  .Select(c =>
@@ -73,14 +77,13 @@ namespace FMA.API.Services
                  .ToList();
                  
                 return characters;
-            }
+            
         }
 
         public IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids)
         {
          
-            using (_context)
-            {
+           
                 var characters =
                 _context.Characters
             .Where(c => ids.Contains(c.Id))
@@ -103,7 +106,7 @@ namespace FMA.API.Services
                 .ToList();
    
                 return characters;
-            }
+            
            
 
                 
@@ -111,11 +114,10 @@ namespace FMA.API.Services
           
                 
         }
-        public CharacterDto GetCharacter(Guid id)
+        public CharacterDto GetCharacterDto(Guid id)
         {
 
-            using (_context)
-            {
+          
                 var character = _context.Characters
                     .Where(c => c.Id == id)
                        .Select(c =>
@@ -140,8 +142,19 @@ namespace FMA.API.Services
 
 
                 return character;
-            }
+            
                 
+        }
+
+        public Character GetCharacter(Guid id)
+        {
+            
+                var character = _context.Characters
+                    .FirstOrDefault(c => c.Id == id);
+
+                return character;
+
+                    
         }
 
        
@@ -326,24 +339,22 @@ namespace FMA.API.Services
         public Boolean CountryExist(Guid id)
         {
 
-            using (_context)
-            {
+            
                 var boolean = _context.Countries.Any(c => c.Id == id);
 
                 return boolean;
-            }
+            
         }
 
         public Boolean Save()
         {
-            using (_context)
-            {
+            
                 if (_context.SaveChanges() == 0)
                 {
                     return false;
                 }
                 return true;
-            }
+            
         }
     }
 }

@@ -9,7 +9,8 @@ namespace FMA.API.Services
     {
          IEnumerable<CharacterDto> GetCharacters();
         IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids);
-        CharacterDto GetCharacter(Guid id);
+        CharacterDto GetCharacterDto(Guid id);
+        Character GetCharacter(Guid id);
         IEnumerable<Nationality> GetNationalities();
         Nationality GetNationality(Guid id);
 
@@ -34,6 +35,7 @@ namespace FMA.API.Services
         Nationality AddNationality(Nationality nationality, Guid countryId);
         Boolean OccupationExist(Occupation occupation);
         Occupation AddOccupation(Occupation occupation);
+        void DeleteCharacter(Character character);
         
 
         Boolean Save();

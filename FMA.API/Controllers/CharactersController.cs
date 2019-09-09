@@ -14,13 +14,13 @@ namespace FMA.API.Controllers
     public class CharactersController : Controller
     {
         private IFmaRepository _fmaRepository;
-        
-        
+
+
         public CharactersController(IFmaRepository fmaRepository)
         {
             _fmaRepository = fmaRepository;
-           
-          
+
+
         }
 
         [HttpGet()]
@@ -28,8 +28,8 @@ namespace FMA.API.Controllers
         {
             var charactersFromRepo = _fmaRepository.GetCharacters();
             //var characters = Mapper.Map<IEnumerable<Character>,IEnumerable<CharacterDto>>(charactersFromRepo);
-            
-            
+
+
             return Ok(charactersFromRepo);
         }
 
@@ -37,12 +37,12 @@ namespace FMA.API.Controllers
         public IActionResult GetCharacter(Guid id)
         {
             var characterFromRepo = _fmaRepository.GetCharacter(id);
-            if(characterFromRepo == null)
+            if (characterFromRepo == null)
             {
                 return NotFound();
             }
 
-           // var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
+            // var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
             return Ok(characterFromRepo);
         }
         [HttpPost("")]
@@ -57,32 +57,58 @@ namespace FMA.API.Controllers
 
             var exist = _fmaRepository.CharacterExist(characterToBeCreated);
 
-            if(exist)
+            if (exist)
             {
                 return StatusCode(422, "Character already exists");
             }
 
-           var createdCharacter = _fmaRepository.AddCharacter(characterToBeCreated);
+            var createdCharacter = _fmaRepository.AddCharacter(characterToBeCreated);
 
-            if(!_fmaRepository.Save()) {
+            if (!_fmaRepository.Save()) {
 
                 return StatusCode(500, "An error saving resource");
             }
 
             var outerFacingModelCharacter = Mapper.Map<CharacterDto>(createdCharacter);
 
-            return Created("",outerFacingModelCharacter);
+            return Created("", outerFacingModelCharacter);
         }
 
-       [HttpPost("{id}")]
-       public IActionResult BlockCharacterCreate([FromRoute] Guid id)
+        [HttpPost("{id}")]
+        public IActionResult BlockCharacterCreate([FromRoute] Guid id)
         {
-            if(_fmaRepository.CharacterExist(id))
+            if (_fmaRepository.CharacterExist(id))
             {
-                return StatusCode(422, new { message = "Resource already exist"});
+                return StatusCode(422, new { message = "Resource already exist" });
             }
 
             return NotFound();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult CharacterDelete([FromRoute] Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CharacterExist(id))
+            {
+                return NotFound();
+            }
+
+            var character = _fmaRepository.GetCharacter(id);
+
+            _fmaRepository.DeleteCharacter(character);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem deleting resource" });
+            }
+
+
+            return NoContent();
         }
         
     }
