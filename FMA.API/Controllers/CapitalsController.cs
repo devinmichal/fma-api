@@ -28,7 +28,7 @@ namespace FMA.API.Controllers
 
             return Ok(outerFacingModelCapitals);
         }
-        [HttpGet("capitals/{id}")]
+        [HttpGet("capitals/{id}", Name ="GetCapital")]
         public IActionResult GetCapital(Guid id)
         {
             var capitalFromRepo = _fmaRepository.GetCapital(id);
@@ -109,12 +109,25 @@ namespace FMA.API.Controllers
 
             if (!_fmaRepository.CapitalExist(id))
             {
-                return NotFound();
+                var capitalToCreate = Mapper.Map<Capital>(capital);
+                capitalToCreate.Id = id;
+
+                _fmaRepository.AddCapital(capitalToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    return StatusCode(500, new { message = "Problem creating capital" });
+                }
+
+                var capitalDto = Mapper.Map<CapitalDto>(capitalToCreate);
+
+                return CreatedAtRoute("GetCapital",new { id = capitalToCreate.Id},capitalDto);
             }
 
             var capitalFromRepo = _fmaRepository.GetCapital(id);
 
             Mapper.Map(capital, capitalFromRepo);
+
             _fmaRepository.UpdateCapital(capitalFromRepo);
             
             if(!_fmaRepository.Save())

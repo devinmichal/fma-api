@@ -282,6 +282,11 @@ namespace FMA.API.Services
             return capital;
         }
 
+        public void AddCapital(Capital capital)
+        {
+            _context.Add(capital);
+        }
+
         public Boolean CapitalExist(Capital capital)
         {
             var capitals = _context.Capitals.ToList();
@@ -396,13 +401,9 @@ namespace FMA.API.Services
 
         public Boolean Save()
         {
-            
-                if (_context.SaveChanges() == 0)
-                {
-                    return false;
-                }
-                return true;
-            
+
+            return (_context.SaveChanges() >= 0);
+               
         }
     }
 }
