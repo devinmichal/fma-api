@@ -20,6 +20,7 @@ namespace FMA.API.Services
             _context = context;
         }
 
+        public void UpdateCharacter(Character character) { }
         public Boolean CharacterExist(Character character)
         {
             var characters = _context.Characters.ToDictionary(keySelector => keySelector.FirstName.ToLower() + keySelector.LastName.ToLower() + keySelector.Age.ToString());

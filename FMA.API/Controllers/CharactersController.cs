@@ -114,6 +114,34 @@ namespace FMA.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult CharacterUpdate([FromRoute] Guid id, [FromBody] CharacterToUpdateDto character)
+        {
+            if(character == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CharacterExist(id))
+            {
+                return NotFound();
+            }
+
+            var characterFromRepo = _fmaRepository.GetCharacter(id);
+            Mapper.Map(character, characterFromRepo);
+
+            _fmaRepository.UpdateCharacter(characterFromRepo);
+
+            if (!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem updating character" });
+            }
+
+            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterFromRepo);
+
+            return Ok(outerFacingModelCharacter);
+        }
         
     }
 }
