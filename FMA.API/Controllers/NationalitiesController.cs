@@ -102,5 +102,32 @@ namespace FMA.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("nationalites/{id}")]
+        public IActionResult UpdateNationality([FromRoute] Guid id, [FromBody] NationalityToUpdateDto nationality)
+        {
+            if(nationality == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_fmaRepository.NationalityExist(id))
+            {
+                return NotFound();
+            }
+
+            var nationalityFromRepo = _fmaRepository.GetNationality(id);
+            Mapper.Map(nationality, nationalityFromRepo);
+
+            _fmaRepository.UpdateNationality(nationalityFromRepo);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem updating nationality" });
+            }
+
+            var outerFacingModelNationality = Mapper.Map<NationalityDto>(nationalityFromRepo);
+            return Ok(outerFacingModelNationality);
+        }
     }
 }

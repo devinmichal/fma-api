@@ -158,7 +158,7 @@ namespace FMA.API.Services
                     
         }
 
-       
+        public void UpdateNationality(Nationality nationality) { }
         public IEnumerable<Nationality> GetNationalities()
         {
             var nationalities = _context.Nationalities
