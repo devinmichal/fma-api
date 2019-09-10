@@ -78,5 +78,29 @@ namespace FMA.API.Controllers
 
             return Created("", outerFacingModelNationality);
         }
+
+        [HttpDelete("nationalities/{id}")]
+        public IActionResult DeleteNationality([FromRoute] Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.NationalityExist(id))
+            {
+                return NotFound();
+            }
+
+            var nationality = _fmaRepository.GetNationality(id);
+            _fmaRepository.DeleteNationality(nationality);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem deleting nationality" });
+            }
+
+            return NoContent();
+        }
     }
 }

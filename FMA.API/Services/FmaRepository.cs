@@ -200,6 +200,19 @@ namespace FMA.API.Services
 
             return nationality;
         }
+
+        public Boolean NationalityExist(Guid id)
+        {
+            var boolean = _context.Nationalities
+                .Any(n => n.Id == id);
+
+            return boolean;
+        }
+
+        public void DeleteNationality(Nationality nationality)
+        {
+            _context.Remove(nationality);
+        }
         public IEnumerable<Occupation> GetOccupations()
         {
             var occupations = _context.Occupations
