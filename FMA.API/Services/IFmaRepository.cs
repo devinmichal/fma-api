@@ -36,11 +36,13 @@ namespace FMA.API.Services
         Boolean NationalityExist(Guid nationalityId);
         Nationality AddNationality(Nationality nationality, Guid countryId);
         Boolean OccupationExist(Occupation occupation);
+        Boolean OccupationExist(Guid occupationId);
         Occupation AddOccupation(Occupation occupation);
         void DeleteCharacter(Character character);
         void DeleteCountry(Country countryId);
         void DeleteCapital(Capital capital);
         void DeleteNationality(Nationality nationality);
+        void DeleteOccupation(Occupation occupation);
         
 
         Boolean Save();

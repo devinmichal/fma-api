@@ -64,5 +64,29 @@ namespace FMA.API.Controllers
 
             return Created("", outerFacingModelOccupation);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOccupation([FromRoute] Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.OccupationExist(id))
+            {
+                return NotFound();
+            }
+
+            var occupation = _fmaRepository.GetOccupation(id);
+            _fmaRepository.DeleteOccupation(occupation);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem deleting occupation" });
+            }
+
+            return NoContent();
+        }
     }
 }

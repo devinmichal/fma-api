@@ -241,6 +241,13 @@ namespace FMA.API.Services
             return boolean;
         }
 
+        public Boolean OccupationExist(Guid id)
+        {
+            var boolean = _context.Occupations
+                .Any(o => o.Id == id);
+
+            return boolean;
+        }
         public Occupation AddOccupation(Occupation occupation)
         {
             occupation.Id = Guid.NewGuid();
@@ -249,6 +256,10 @@ namespace FMA.API.Services
             return occupation;
         }
 
+        public void DeleteOccupation(Occupation occupation)
+        {
+            _context.Remove(occupation);
+        }
         public Capital AddCapital(Capital capital, Guid countryId) {
 
             var country = GetCountry(countryId);
