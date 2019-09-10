@@ -36,6 +36,7 @@ namespace FMA.API.Services
         Boolean NationalityExist(Nationality nationality);
         Boolean NationalityExist(Guid nationalityId);
         Nationality AddNationality(Nationality nationality, Guid countryId);
+        Nationality AddNationality(Nationality nationality);
         Boolean OccupationExist(Occupation occupation);
         Boolean OccupationExist(Guid occupationId);
         Occupation AddOccupation(Occupation occupation);

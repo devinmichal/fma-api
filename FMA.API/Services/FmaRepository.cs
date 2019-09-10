@@ -203,6 +203,18 @@ namespace FMA.API.Services
             return nationality;
         }
 
+        public Nationality AddNationality(Nationality nationality)
+        {
+            if(nationality.Id == null)
+            {
+                nationality.Id = Guid.NewGuid();
+            }
+
+            _context.Add(nationality);
+
+            return nationality;
+        }
+
         public Boolean NationalityExist(Guid id)
         {
             var boolean = _context.Nationalities

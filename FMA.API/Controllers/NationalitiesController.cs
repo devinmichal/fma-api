@@ -29,7 +29,7 @@ namespace FMA.API.Controllers
             return Ok(nationalities);
         }
 
-        [HttpGet("nationalities/{id}")]
+        [HttpGet("nationalities/{id}", Name = "GetNationality")]
         public IActionResult GetNationality(Guid id)
         {
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
@@ -113,7 +113,19 @@ namespace FMA.API.Controllers
 
             if (!_fmaRepository.NationalityExist(id))
             {
-                return NotFound();
+                var nationalityToCreate = Mapper.Map<Nationality>(nationality);
+                nationalityToCreate.Id = id;
+
+                _fmaRepository.AddNationality(nationalityToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var nationalityDto = Mapper.Map<Nationality>(nationalityToCreate);
+
+                return CreatedAtRoute("GetNationality",new { id = id }, nationalityDto);
             }
 
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
