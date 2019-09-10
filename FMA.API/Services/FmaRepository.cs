@@ -260,6 +260,11 @@ namespace FMA.API.Services
         {
             _context.Remove(occupation);
         }
+
+        public void UpdateCapital(Capital capital)
+        {
+
+        }
         public Capital AddCapital(Capital capital, Guid countryId) {
 
             var country = GetCountry(countryId);

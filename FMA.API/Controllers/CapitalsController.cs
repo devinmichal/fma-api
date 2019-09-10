@@ -98,5 +98,33 @@ namespace FMA.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("capitals/{id}")]
+        public IActionResult UpdateCapital([FromRoute] Guid id , [FromBody] CapitalToUpdateDto capital) 
+        {
+            if(capital == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_fmaRepository.CapitalExist(id))
+            {
+                return NotFound();
+            }
+
+            var capitalFromRepo = _fmaRepository.GetCapital(id);
+
+            Mapper.Map(capital, capitalFromRepo);
+            _fmaRepository.UpdateCapital(capitalFromRepo);
+            
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Couldn't update capital" });
+            }
+
+            var outerFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
+
+            return Ok(outerFacingModelCapital);
+        }
     }
 }
