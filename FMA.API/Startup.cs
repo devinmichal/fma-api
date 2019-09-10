@@ -104,6 +104,9 @@ namespace FMA.API
                 ctg.CreateMap<OccupationToCreateDto, Occupation>();
                 ctg.CreateMap<CapitalToUpdateDto, Capital>();
                 ctg.CreateMap<CharacterToUpdateDto, Character>();
+                ctg.CreateMap<NationalityToUpdateDto, Nationality>();
+                ctg.CreateMap<OccupationToUpdateDto, Occupation>();
+                ctg.CreateMap<CountryToUpdateDto, CountryDto>();
                 
 
 
