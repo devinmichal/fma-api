@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FMA.API.Entities;
 using FMA.API.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
 {
@@ -135,6 +136,55 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Couldn't update capital" });
             }
 
+            var outerFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
+
+            return Ok(outerFacingModelCapital);
+        }
+
+        [HttpPatch("capitals/{id}")]
+        public IActionResult PartiallyUpdateCapital([FromRoute] Guid id, 
+            [FromBody] JsonPatchDocument<CapitalToUpdateDto> capital)
+        {
+            if (capital == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_fmaRepository.CapitalExist(id))
+            {
+                var capitalToUpdateDto = new CapitalToUpdateDto();
+
+                capital.ApplyTo(capitalToUpdateDto);
+
+                var capitalToCreate = Mapper.Map<Capital>(capitalToUpdateDto);
+                capitalToCreate.Id = id;
+
+                _fmaRepository.AddCapital(capitalToCreate);
+
+                if (!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var capitalDto = Mapper.Map<CapitalDto>(capitalToCreate);
+
+                return CreatedAtRoute("GetCapital", new { id = capitalToCreate.Id }, capitalDto);
+            }
+
+            var capitalFromRepo = _fmaRepository.GetCapital(id);
+
+            var capitalToPatch = Mapper.Map<CapitalToUpdateDto>(capitalFromRepo);
+
+            capital.ApplyTo(capitalToPatch);
+
+            Mapper.Map(capitalToPatch, capitalFromRepo);
+
+            _fmaRepository.UpdateCapital(capitalFromRepo);
+
+            if(!_fmaRepository.Save())
+            {
+                throw new Exception();
+            }
             var outerFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
 
             return Ok(outerFacingModelCapital);
