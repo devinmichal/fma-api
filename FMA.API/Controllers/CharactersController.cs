@@ -125,7 +125,15 @@ namespace FMA.API.Controllers
 
             if(!_fmaRepository.CharacterExist(id))
             {
-                return NotFound();
+                var characterToCreate = Mapper.Map<Character>(character);
+                characterToCreate.Id = id;
+
+                _fmaRepository.AddCharacter(characterToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    return StatusCode(500, new { message ="Problem creating character"});
+                }
             }
 
             var characterFromRepo = _fmaRepository.GetCharacter(id);
