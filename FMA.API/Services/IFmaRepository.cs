@@ -31,12 +31,14 @@ namespace FMA.API.Services
         Boolean CountryExist(Guid id);
         Capital AddCapital(Capital capital , Guid countryId);
         Boolean CapitalExist(Capital capital);
+        Boolean CapitalExist(Guid capitalId);
         Boolean NationalityExist(Nationality nationality);
         Nationality AddNationality(Nationality nationality, Guid countryId);
         Boolean OccupationExist(Occupation occupation);
         Occupation AddOccupation(Occupation occupation);
         void DeleteCharacter(Character character);
         void DeleteCountry(Country countryId);
+        void DeleteCapital(Capital capital);
         
 
         Boolean Save();

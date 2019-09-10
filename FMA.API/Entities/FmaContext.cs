@@ -33,6 +33,11 @@ namespace FMA.API.Entities
               .WithOne(c => c.Country)
               .HasForeignKey(c => c.CountryId)
               .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Capital>()
+                .HasOne(cp => cp.Country)
+                .WithOne(cty => cty.Capital)
+                .HasForeignKey<Country>(cty => cty.CapitalId)
+                .OnDelete(DeleteBehavior.SetNull);
 
 
 

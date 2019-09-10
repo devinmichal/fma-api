@@ -259,6 +259,14 @@ namespace FMA.API.Services
 
             return boolean;
         }
+
+        public Boolean CapitalExist(Guid capitalId)
+        {
+            var boolean = _context.Capitals
+                .Any(c => c.Id == capitalId);
+
+            return boolean;
+        }
         public IEnumerable<Capital> GetCapitals()
         {
             var capitals = _context.Capitals
@@ -275,6 +283,10 @@ namespace FMA.API.Services
             return capital;
         }
 
+        public void DeleteCapital(Capital capital)
+        {
+            _context.Remove(capital);
+        }
         public IEnumerable<Currency> GetCurrencies()
         {
             var currencies = _context.Currencies

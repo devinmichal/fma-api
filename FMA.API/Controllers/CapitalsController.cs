@@ -74,5 +74,29 @@ namespace FMA.API.Controllers
             return Created("", outerFacingModelCaptial);
             
         }
+
+        [HttpDelete("capitals/{id}")]
+        public IActionResult DeleteCapital([FromRoute] Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CapitalExist(id))
+            {
+                return NotFound();
+            }
+
+            var capital = _fmaRepository.GetCapital(id);
+            _fmaRepository.DeleteCapital(capital);
+
+            if (!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem deleting capital" });
+            }
+
+            return NoContent();
+        }
     }
 }
