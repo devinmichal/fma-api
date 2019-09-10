@@ -29,7 +29,7 @@ namespace FMA.API.Controllers
             return Ok(outerFacingModelOccupations);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name ="GetOccupation")]
         public IActionResult GetOccupation(Guid id)
         {
             var occupationFromRepo = _fmaRepository.GetOccupation(id);
@@ -99,7 +99,19 @@ namespace FMA.API.Controllers
 
             if(_fmaRepository.OccupationExist(id))
             {
-                return NotFound();
+                var occupationToCreate = Mapper.Map<Occupation>(occupation);
+                occupationToCreate.Id = id;
+
+                _fmaRepository.AddOccupation(occupationToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var occupationDto = Mapper.Map<OccupationDto>(occupationToCreate);
+
+                return CreatedAtRoute("GetOccupation",new {id = id },occupationDto);
             }
 
             var occupationFromRepo = _fmaRepository.GetOccupation(id);
