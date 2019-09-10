@@ -66,16 +66,16 @@ namespace FMA.API.Controllers
                 return StatusCode(422, "Character already exists");
             }
 
-            var createdCharacter = _fmaRepository.AddCharacter(characterToBeCreated);
+             _fmaRepository.AddCharacter(characterToBeCreated);
 
             if (!_fmaRepository.Save()) {
 
                 return StatusCode(500, "An error saving resource");
             }
 
-            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(createdCharacter);
+            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterToBeCreated);
 
-            return Created("", outerFacingModelCharacter);
+            return CreatedAtRoute("GetCharacter",new { id = characterToBeCreated.Id} ,outerFacingModelCharacter);
         }
 
         [HttpPost("{id}")]
@@ -134,6 +134,10 @@ namespace FMA.API.Controllers
                 {
                     return StatusCode(500, new { message ="Problem creating character"});
                 }
+
+                var characterDto = Mapper.Map<CharacterDto>(characterToCreate);
+
+                return CreatedAtRoute("GetCharacter", new { id =id},characterDto);
             }
 
             var characterFromRepo = _fmaRepository.GetCharacter(id);

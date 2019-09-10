@@ -41,9 +41,10 @@ namespace FMA.API.Services
         }
         public Character AddCharacter(Character character)
         {
-
-            character.Id = Guid.NewGuid();
-          
+            if (character.Id == null)
+            {
+                character.Id = Guid.NewGuid();
+            }
             _context.Add(character);
 
             return character;
@@ -368,7 +369,10 @@ namespace FMA.API.Services
 
         public Country AddCountry(Country country)
         {
-            country.Id = Guid.NewGuid();
+            if (country.Id == null)
+            {
+                country.Id = Guid.NewGuid();
+            }
             _context.Add(country);
 
             return country;

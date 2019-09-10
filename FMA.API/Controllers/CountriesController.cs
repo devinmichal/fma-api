@@ -29,7 +29,7 @@ namespace FMA.API.Controllers
             return Ok(outerFacingModelCountries);
 
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetCountry")]
         public IActionResult GetCountry(Guid id)
         {
             var countryFromRepo = _fmaRepository.GetCountry(id);
@@ -107,7 +107,19 @@ namespace FMA.API.Controllers
 
             if(!_fmaRepository.CountryExist(id))
             {
-                return NotFound();
+                var countryToCreate = Mapper.Map<Country>(country);
+                countryToCreate.Id = id;
+
+                _fmaRepository.AddCountry(countryToCreate);
+
+                if (!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var countryDto = Mapper.Map<CountryDto>(countryToCreate);
+
+                return CreatedAtRoute("GetCountry",new { id = id},countryDto);
             }
 
             var countryFromRepo = _fmaRepository.GetCountry(id);
