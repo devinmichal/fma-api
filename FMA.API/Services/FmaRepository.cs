@@ -214,6 +214,8 @@ namespace FMA.API.Services
         {
             _context.Remove(nationality);
         }
+
+        public void UpdateOccupation(Occupation occupation) { }
         public IEnumerable<Occupation> GetOccupations()
         {
             var occupations = _context.Occupations

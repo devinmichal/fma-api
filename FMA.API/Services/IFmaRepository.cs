@@ -47,6 +47,7 @@ namespace FMA.API.Services
         void UpdateCharacter(Character character);
         void UpdateCountry(Country country);
         void UpdateNationality(Nationality nationality);
+        void UpdateOccupation(Occupation occupation);
         
 
         Boolean Save();

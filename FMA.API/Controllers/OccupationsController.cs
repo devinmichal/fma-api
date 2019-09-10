@@ -88,5 +88,33 @@ namespace FMA.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateOccupation([FromRoute] Guid id, [FromBody] OccupationToUpdateDto occupation)
+        {
+            if(occupation == null)
+            {
+                return BadRequest();
+            }
+
+            if(_fmaRepository.OccupationExist(id))
+            {
+                return NotFound();
+            }
+
+            var occupationFromRepo = _fmaRepository.GetOccupation(id);
+            Mapper.Map(occupation, occupationFromRepo);
+
+            _fmaRepository.UpdateOccupation(occupationFromRepo);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem updating occupation" });
+            }
+
+            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+
+            return Ok(outerFacingModelOccupation);
+        }
     }
 }
