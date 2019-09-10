@@ -28,6 +28,13 @@ namespace FMA.API.Entities
             modelBuilder.Entity<Character>()
                .HasOne(c => c.Nationality)
                .WithMany(n => n.Members);
+            modelBuilder.Entity<Country>()
+              .HasMany(cty => cty.Members)
+              .WithOne(c => c.Country)
+              .HasForeignKey(c => c.CountryId)
+              .OnDelete(DeleteBehavior.SetNull);
+
+
 
 
         }

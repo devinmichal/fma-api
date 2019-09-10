@@ -34,7 +34,7 @@ namespace FMA.API.Controllers
         {
             var countryFromRepo = _fmaRepository.GetCountry(id);
 
-            if(countryFromRepo == null)
+            if (countryFromRepo == null)
             {
                 return NotFound();
             }
@@ -54,7 +54,7 @@ namespace FMA.API.Controllers
 
             var countryToBeCreated = Mapper.Map<Country>(countryDto);
 
-            if(_fmaRepository.CountryExist(countryToBeCreated))
+            if (_fmaRepository.CountryExist(countryToBeCreated))
             {
                 return StatusCode(422, new { message = "Country already exists" });
             }
@@ -70,6 +70,31 @@ namespace FMA.API.Controllers
             var outerFacingModelCountry = Mapper.Map<CountryDto>(createdCountry);
 
             return Created("", outerFacingModelCountry);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCountry([FromRoute] Guid id)
+        {
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CountryExist(id))
+            {
+                return NotFound();
+            }
+
+            var country = _fmaRepository.GetCountry(id);
+
+            _fmaRepository.DeleteCountry(country);
+
+            if(!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem deleting resource" });
+            }
+
+            return NoContent();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace FMA.API.Entities
         public string Rank { get; set; }
         public string Goal { get; set; }
         public Guid? CountryId { get; set; }
-        [ForeignKey("CountryId")]
+        
         public Country Country { get; set; }
     }
 }

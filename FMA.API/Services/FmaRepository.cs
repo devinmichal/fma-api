@@ -326,10 +326,8 @@ namespace FMA.API.Services
 
         public Boolean CountryExist(Country country)
         {
-            var countries = _context.Countries
-                .ToList();
-               
-                var boolean = countries
+         
+                var boolean = _context.Countries
                 .Any(c => c.Name.ToLower().Contains(country.Name.ToLower()) && c.Government.ToLower().Contains(country.Government.ToLower()));
 
 
@@ -344,6 +342,11 @@ namespace FMA.API.Services
 
                 return boolean;
             
+        }
+
+        public void DeleteCountry(Country country)
+        {
+            _context.Remove(country);
         }
 
         public Boolean Save()

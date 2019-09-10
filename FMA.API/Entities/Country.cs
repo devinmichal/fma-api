@@ -22,5 +22,7 @@ namespace FMA.API.Entities
         public Guid? GovernorId { get; set; }
         public Nationality Nationality { get; set; }
         public Guid? NationalityId { get; set; }
+
+        public IEnumerable<Character> Members { get; set; } = new List<Character>();
     }
 }

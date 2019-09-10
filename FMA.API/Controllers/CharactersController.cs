@@ -36,14 +36,18 @@ namespace FMA.API.Controllers
         [HttpGet("{id}", Name = "GetCharacter")]
         public IActionResult GetCharacter(Guid id)
         {
-            var characterFromRepo = _fmaRepository.GetCharacter(id);
-            if (characterFromRepo == null)
+            if(id == null)
+            {
+                return BadRequest();
+            }
+
+            if (!_fmaRepository.CharacterExist(id))
             {
                 return NotFound();
             }
-
-            // var character = Mapper.Map<Character, CharacterDto>(characterFromRepo);
-            return Ok(characterFromRepo);
+            var outerfacingModelCharacter = _fmaRepository.GetCharacterDto(id);
+          
+            return Ok(outerfacingModelCharacter);
         }
         [HttpPost("")]
         public IActionResult CreateCharacter([FromBody]CharacterToCreateDto characterDto)

@@ -36,6 +36,7 @@ namespace FMA.API.Services
         Boolean OccupationExist(Occupation occupation);
         Occupation AddOccupation(Occupation occupation);
         void DeleteCharacter(Character character);
+        void DeleteCountry(Country countryId);
         
 
         Boolean Save();
