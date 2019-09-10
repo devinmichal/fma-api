@@ -345,6 +345,7 @@ namespace FMA.API.Services
             return countries;
         }
 
+        public void UpdateCountry(Country country) { }
         public Country GetCountry(Guid id)
         {
             var country = _context.Countries

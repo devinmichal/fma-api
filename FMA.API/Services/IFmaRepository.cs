@@ -45,6 +45,7 @@ namespace FMA.API.Services
         void DeleteOccupation(Occupation occupation);
         void UpdateCapital(Capital capital);
         void UpdateCharacter(Character character);
+        void UpdateCountry(Country country);
         
 
         Boolean Save();

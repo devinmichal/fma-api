@@ -96,5 +96,33 @@ namespace FMA.API.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCountry([FromRoute] Guid id, [FromBody] CountryToUpdateDto country)
+        {
+            if(country == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CountryExist(id))
+            {
+                return NotFound();
+            }
+
+            var countryFromRepo = _fmaRepository.GetCountry(id);
+            Mapper.Map(country, countryFromRepo);
+
+            _fmaRepository.UpdateCountry(countryFromRepo);
+
+            if (!_fmaRepository.Save())
+            {
+                return StatusCode(500, new { message = "Problem updating country" });
+            }
+
+            var outerFacingModelCountry = Mapper.Map<CountryDto>(countryFromRepo);
+
+            return Ok(outerFacingModelCountry);
+        }
     }
 }
