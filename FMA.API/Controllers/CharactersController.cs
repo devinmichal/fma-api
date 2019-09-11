@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
 {
@@ -155,5 +156,52 @@ namespace FMA.API.Controllers
             return Ok(outerFacingModelCharacter);
         }
         
+        [HttpPatch("{id}")]
+        public IActionResult PartiallyUpdateCharacter([FromRoute] Guid id,
+            [FromBody] JsonPatchDocument<CharacterToUpdateDto> character)
+        {
+            if(character == null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CharacterExist(id))
+            {
+                var characterToUpdateDto = new CharacterToUpdateDto();
+                character.ApplyTo(characterToUpdateDto);
+
+                var characterToCreate = Mapper.Map<Character>(characterToUpdateDto);
+                characterToCreate.Id = id;
+
+                _fmaRepository.AddCharacter(characterToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var characterDto = Mapper.Map<CharacterDto>(characterToCreate);
+
+                return CreatedAtRoute("GetCharacter",new { id = id},characterDto);
+            }
+
+            var characterFromRepo = _fmaRepository.GetCharacter(id);
+            var characterUpdateDto = Mapper.Map<CharacterToUpdateDto>(characterFromRepo);
+
+            character.ApplyTo(characterUpdateDto);
+
+            Mapper.Map(characterUpdateDto, characterFromRepo);
+
+            _fmaRepository.UpdateCharacter(characterFromRepo);
+
+            if(!_fmaRepository.Save())
+            {
+                throw new Exception();
+            }
+
+            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterFromRepo);
+
+            return Ok(outerFacingModelCharacter);
+        }
     }
 }
