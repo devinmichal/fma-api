@@ -23,10 +23,10 @@ namespace FMA.API.Services
         public void UpdateCharacter(Character character) { }
         public Boolean CharacterExist(Character character)
         {
-            var characters = _context.Characters.ToDictionary(keySelector => keySelector.FirstName.ToLower() + keySelector.LastName.ToLower() + keySelector.Age.ToString());
-            var boolean = characters.ContainsKey(character.FirstName.Trim().ToLower() + character.LastName.Trim().ToLower() + character.Age.ToString());
 
-            return boolean;
+            var boolean = _context.Characters.Any(c => c.FirstName.Trim().ToLower() == character.FirstName.Trim().ToLower() && c.LastName.Trim().ToLower() == character.LastName.Trim().ToLower() && c.Age == character.Age);
+
+           return boolean;
            
         }
 

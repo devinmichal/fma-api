@@ -123,7 +123,7 @@ namespace FMA.API.Controllers
             {
                 return BadRequest();
             }
-
+         
             if(!_fmaRepository.CharacterExist(id))
             {
                 var characterToCreate = Mapper.Map<Character>(character);
