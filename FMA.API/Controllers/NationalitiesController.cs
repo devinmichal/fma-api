@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FMA.API.Entities;
 using FMA.API.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
 {
@@ -34,7 +35,7 @@ namespace FMA.API.Controllers
         {
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
 
-            if(nationalityFromRepo == null)
+            if (nationalityFromRepo == null)
             {
                 return NotFound();
             }
@@ -46,34 +47,34 @@ namespace FMA.API.Controllers
         [HttpPost("countries/{countryId}/nationalities")]
         public IActionResult CreateNationality([FromRoute] Guid countryId, [FromBody] NationalityToCreateDto nationalityToCreateDto)
         {
-           
-            if(nationalityToCreateDto == null)
+
+            if (nationalityToCreateDto == null)
             {
-                return BadRequest(new { message = "Need resource in the body"});
+                return BadRequest(new { message = "Need resource in the body" });
             }
 
-           
-            if(!_fmaRepository.CountryExist(countryId))
+
+            if (!_fmaRepository.CountryExist(countryId))
             {
-                return NotFound(new { message = "Country doesn't exist"});
+                return NotFound(new { message = "Country doesn't exist" });
             }
 
             var nationalityToBeCreated = Mapper.Map<Nationality>(nationalityToCreateDto);
 
-          
+
             if (_fmaRepository.NationalityExist(nationalityToBeCreated))
             {
                 return StatusCode(422, new { message = "Resource already exist. Cannot create." });
             }
 
-           
-           var createdNationality =  _fmaRepository.AddNationality(nationalityToBeCreated, countryId);
-        
+
+            var createdNationality = _fmaRepository.AddNationality(nationalityToBeCreated, countryId);
+
             if (!_fmaRepository.Save())
             {
                 return StatusCode(500, new { message = "Cannot save resource." });
             }
-            
+
             var outerFacingModelNationality = Mapper.Map<NationalityDto>(createdNationality);
 
             return Created("", outerFacingModelNationality);
@@ -82,12 +83,12 @@ namespace FMA.API.Controllers
         [HttpDelete("nationalities/{id}")]
         public IActionResult DeleteNationality([FromRoute] Guid id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return BadRequest();
             }
 
-            if(!_fmaRepository.NationalityExist(id))
+            if (!_fmaRepository.NationalityExist(id))
             {
                 return NotFound();
             }
@@ -95,7 +96,7 @@ namespace FMA.API.Controllers
             var nationality = _fmaRepository.GetNationality(id);
             _fmaRepository.DeleteNationality(nationality);
 
-            if(!_fmaRepository.Save())
+            if (!_fmaRepository.Save())
             {
                 return StatusCode(500, new { message = "Problem deleting nationality" });
             }
@@ -106,7 +107,7 @@ namespace FMA.API.Controllers
         [HttpPut("nationalites/{id}")]
         public IActionResult UpdateNationality([FromRoute] Guid id, [FromBody] NationalityToUpdateDto nationality)
         {
-            if(nationality == null)
+            if (nationality == null)
             {
                 return BadRequest();
             }
@@ -118,14 +119,14 @@ namespace FMA.API.Controllers
 
                 _fmaRepository.AddNationality(nationalityToCreate);
 
-                if(!_fmaRepository.Save())
+                if (!_fmaRepository.Save())
                 {
                     throw new Exception();
                 }
 
                 var nationalityDto = Mapper.Map<Nationality>(nationalityToCreate);
 
-                return CreatedAtRoute("GetNationality",new { id = id }, nationalityDto);
+                return CreatedAtRoute("GetNationality", new { id = id }, nationalityDto);
             }
 
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
@@ -133,13 +134,66 @@ namespace FMA.API.Controllers
 
             _fmaRepository.UpdateNationality(nationalityFromRepo);
 
-            if(!_fmaRepository.Save())
+            if (!_fmaRepository.Save())
             {
                 return StatusCode(500, new { message = "Problem updating nationality" });
             }
 
             var outerFacingModelNationality = Mapper.Map<NationalityDto>(nationalityFromRepo);
             return Ok(outerFacingModelNationality);
+        }
+
+        [HttpPatch("nationalities/{id}")]
+        public IActionResult PartialNationalityUpdate([FromRoute] Guid id,
+            [FromBody]JsonPatchDocument<NationalityToUpdateDto> nationality) {
+
+            if(nationality is null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.NationalityExist(id))
+            {
+                var nationalityUpdateDto = new NationalityToUpdateDto();
+
+                nationality.ApplyTo(nationalityUpdateDto);
+
+                var nationalityToCreate = Mapper.Map<Nationality>(nationalityUpdateDto);
+
+                nationalityToCreate.Id = id;
+
+                _fmaRepository.AddNationality(nationalityToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var nationalityDto = Mapper.Map<NationalityDto>(nationalityToCreate);
+
+
+                return CreatedAtRoute("GetNationality", new { id = id }, nationalityDto);
+            }
+
+            var nationalityFromRepo = _fmaRepository.GetNationality(id);
+            var nationalityToUpdate = Mapper.Map<NationalityToUpdateDto>(nationalityFromRepo);
+
+            nationality.ApplyTo(nationalityToUpdate);
+
+            Mapper.Map(nationalityToUpdate, nationalityFromRepo);
+
+            _fmaRepository.UpdateNationality(nationalityFromRepo);
+
+
+            if(!_fmaRepository.Save())
+            {
+                throw new Exception();
+            }
+
+            var outerFacingModelNationality = Mapper.Map<CountryDto>(nationalityFromRepo);
+
+            return Ok(outerFacingModelNationality);
+
         }
     }
 }
