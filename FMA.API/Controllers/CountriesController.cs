@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FMA.API.Services;
 using AutoMapper;
 using FMA.API.Entities;
 using FMA.API.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
 {
@@ -136,5 +135,57 @@ namespace FMA.API.Controllers
 
             return Ok(outerFacingModelCountry);
         }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartialCountryUpdate([FromRoute] Guid countryId,
+            [FromBody] JsonPatchDocument<CountryToUpdateDto> country) {
+
+
+            if(country is null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.CountryExist(countryId))
+            {
+                var countryToUpdate = new CountryToUpdateDto();
+
+                country.ApplyTo(countryToUpdate);
+
+                var countryToCreate = Mapper.Map<Country>(countryToUpdate);
+
+                countryToCreate.Id = countryId;
+
+                _fmaRepository.AddCountry(countryToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var countryDto = Mapper.Map<CountryDto>(countryToCreate);
+
+                return CreatedAtRoute("GetCountry",new { id = countryId},countryDto);
+            }
+
+            var countryFromRepo = _fmaRepository.GetCountry(countryId);
+            var countryToUpdateDto = Mapper.Map<CountryToUpdateDto>(countryFromRepo);
+
+            country.ApplyTo(countryToUpdateDto);
+
+            Mapper.Map(countryToUpdateDto, countryFromRepo);
+
+            _fmaRepository.UpdateCountry(countryFromRepo);
+
+            if (!_fmaRepository.Save())
+            {
+                throw new Exception();
+            }
+
+            var outerFacingModelCountry = Mapper.Map<CountryDto>(countryFromRepo);
+
+            return Ok(outerFacingModelCountry);
+        }
+
     }
 }
