@@ -24,7 +24,9 @@ namespace FMA.API.Services
         public Boolean CharacterExist(Character character)
         {
 
-            var boolean = _context.Characters.Any(c => c.FirstName.Trim().ToLower() == character.FirstName.Trim().ToLower() && c.LastName.Trim().ToLower() == character.LastName.Trim().ToLower() && c.Age == character.Age);
+            var boolean = _context.Characters.Any(c => c.FirstName.Trim().ToLower() == character.FirstName.Trim().ToLower()
+            && c.LastName.Trim().ToLower() == character.LastName.Trim().ToLower()
+            && c.Age == character.Age);
 
            return boolean;
            
