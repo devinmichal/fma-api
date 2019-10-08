@@ -4,9 +4,6 @@ using FMA.API.Models;
 using FMA.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
@@ -56,6 +53,11 @@ namespace FMA.API.Controllers
             if (characterDto == null)
             {
                 return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return  new UnprocessableEntityObjectResult(ModelState);
             }
 
             var characterToBeCreated = Mapper.Map<Character>(characterDto);
