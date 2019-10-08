@@ -24,18 +24,14 @@ namespace FMA.API.Entities
         [Required]
         public Guid? CurrencyId { get; set; }
 
-        [MaxLength(5)]
+        [MaxLength(4)]
         public int Founded { get; set; }
 
         [MaxLength(100)]
         public int Population { get; set; }
 
         public string Government { get; set; }
-        [ForeignKey("GovernorId")]
-        public Character Governor { get; set; }
-
-        [Required]
-        public Guid? GovernorId { get; set; }
+     
         public Nationality Nationality { get; set; }
 
         [Required]

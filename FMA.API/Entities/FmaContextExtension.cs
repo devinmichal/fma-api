@@ -88,7 +88,10 @@ namespace FMA.API.Entities
                     Name = "Unknown",
                     CapitalId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291"),
                     CurrencyId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291"),
-                    NationalityId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291")
+                    NationalityId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291"),
+                    Population = 0,
+                    Founded = 0
+                   
 
               }
             };

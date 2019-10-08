@@ -32,22 +32,22 @@ namespace FMA.API.Entities
               .HasMany(cty => cty.Members)
               .WithOne(c => c.Country)
               .HasForeignKey(c => c.CountryId)
-              .OnDelete(DeleteBehavior.SetNull);
+              .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Capital>()
                 .HasOne(cp => cp.Country)
                 .WithOne(cty => cty.Capital)
                 .HasForeignKey<Country>(cty => cty.CapitalId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Nationality>()
                 .HasOne(n => n.Country)
                 .WithOne(cty => cty.Nationality)
                 .HasForeignKey<Country>(cty => cty.NationalityId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Occupation>()
                 .HasMany(o => o.Members)
                 .WithOne(c => c.Occupation)
                 .HasForeignKey(c => c.OccupationId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
 
 

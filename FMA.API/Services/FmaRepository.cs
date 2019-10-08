@@ -358,7 +358,6 @@ namespace FMA.API.Services
         public IEnumerable<Country> GetCountries()
         {
             var countries = _context.Countries
-                .Include(c => c.Governor)
                 .Include(c => c.Nationality)
                 .Include(c => c.Capital)
                 .Include(c => c.Currency)
@@ -371,7 +370,6 @@ namespace FMA.API.Services
         public Country GetCountry(Guid id)
         {
             var country = _context.Countries
-                .Include(c => c.Governor)
                 .Include(c => c.Nationality)
                 .Include(c => c.Capital)
                 .Include(c => c.Currency)

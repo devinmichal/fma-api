@@ -11,7 +11,6 @@ namespace FMA.API.Models
         public string Name { get; set; }
         public string Capital { get; set; }
         public string Nationality { get; set; }
-        public string Govenor { get; set; }
         public string Currency { get; set; }
         public int Popuation { get; set; }
         public int Founded { get; set; }

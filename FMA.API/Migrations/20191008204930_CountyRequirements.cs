@@ -43,13 +43,6 @@ namespace FMA.API.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "GovernorId",
-                table: "Countries",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<Guid>(
                 name: "CurrencyId",
                 table: "Countries",
                 nullable: false,
@@ -89,13 +82,6 @@ namespace FMA.API.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Countries_Characters_GovernorId",
-                table: "Countries",
-                column: "GovernorId",
-                principalTable: "Characters",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
