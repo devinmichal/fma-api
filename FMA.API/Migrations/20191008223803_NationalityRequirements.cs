@@ -20,10 +20,6 @@ namespace FMA.API.Migrations
                 table: "Countries");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Countries_Characters_GovernorId",
-                table: "Countries");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_Countries_Nationalities_NationalityId",
                 table: "Countries");
 
@@ -31,9 +27,7 @@ namespace FMA.API.Migrations
                 name: "IX_Countries_GovernorId",
                 table: "Countries");
 
-            migrationBuilder.DropColumn(
-                name: "GovernorId",
-                table: "Countries");
+
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -102,16 +96,8 @@ namespace FMA.API.Migrations
                 oldMaxLength: 100,
                 oldNullable: true);
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "GovernorId",
-                table: "Countries",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Countries_GovernorId",
-                table: "Countries",
-                column: "GovernorId");
+
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Characters_Countries_CountryId",
@@ -136,14 +122,6 @@ namespace FMA.API.Migrations
                 principalTable: "Capitals",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.SetNull);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Countries_Characters_GovernorId",
-                table: "Countries",
-                column: "GovernorId",
-                principalTable: "Characters",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Countries_Nationalities_NationalityId",
