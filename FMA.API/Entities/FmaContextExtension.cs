@@ -31,7 +31,8 @@ namespace FMA.API.Entities
              new Currency()
             {
                     Id = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291"),
-                    Name = "Unknown"
+                    Name = "Unknown",
+                    Description = "Unknown"
 
                 }
             };
@@ -41,6 +42,8 @@ namespace FMA.API.Entities
             {
                     Id = new Guid("900f6350-82c5-4e5d-aff3-1b74adf3612d"),
                     Name = "Amestrian"
+                    
+                    
              },
              new Nationality()
 
@@ -58,13 +61,14 @@ namespace FMA.API.Entities
             {
                     Id = new Guid("4c793930-8632-48ad-9850-499f74de0853"),
                     Name = "Central City",
-                    Description = "Central City is the official capital and also the seat of government in Amestris. The National Central Library, Central Command, the 5 National Laboratories, and Amestris' Parliament are all located in Central. Aside from its symbol as a military headquarters, Central is also a bustling metropolis and arguably Amestris' largest city, complete with nearly everything Amestrian society has to offer as well as a lasting and rarely disturbed sense of peace created by its proximity to the government's imposing presence. After the events in the eastern regions of Amestris and the Elrics' excursion to the southern region, much of the Fullmetal Alchemist story takes place in Central, as it also serves as the Homunculi's home base, the heart of which is located deep beneath Central Command Headquarters",
+                    Description = "Central City is the official capital and also the seat of government in Amestris. The National Central Library, Central Command, the 5 National Laboratories, and Amestris' Parliament are all located in Central. Aside from its symbol as a military headquarters, Central is also a bustling metropolis and arguably Amestris' largest city, complete with nearly everything Amestrian society has to offer as well as a lasting and rarely disturbed sense of peace created by its proximity to the government's imposing presence. After the events in the eastern regions of Amestris and the Elrics' excursion to the southern region, much of the Fullmetal Alchemist story takes place in Central, as it also serves as the Homunculi's home base, the heart of which is located deep beneath Central Command Headquarters"
              },
              new Capital()
 
              {
                     Id = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291"),
-                    Name = "Unknown"
+                    Name = "Unknown",
+                    Description = "Unknown"
 
              }
             };
@@ -140,7 +144,7 @@ namespace FMA.API.Entities
 
             };
            
-            for(int i = 0; i < 5000; i++)
+          /*  for(int i = 0; i < 5000; i++)
             {
 
                 character.Add(new Character()
@@ -158,7 +162,7 @@ namespace FMA.API.Entities
                     Aliases = "Flame Alchemist,Hero of Ishbal,Roy-Boy, Chief",
                     CountryId = new Guid("63891193-dce2-41ee-bdb0-6cfaf69b6d27"),
                 });
-            } 
+            } */
             context.AddRange(character);
              context.SaveChanges();
         } 
