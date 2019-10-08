@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FMA.API.Models;
 using FMA.API.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FMA.API.Controllers
 {
@@ -125,6 +126,59 @@ namespace FMA.API.Controllers
             }
 
             var outerFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+
+            return Ok(outerFacingModelOccupation);
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartialOccupationUpdate( [FromRoute] Guid id,
+            [FromBody] JsonPatchDocument<OccupationToUpdateDto> occupation)
+        {
+            if(occupation is null)
+            {
+                return BadRequest();
+            }
+
+            if(!_fmaRepository.OccupationExist(id))
+            {
+
+                var occupationToUpdateDto = new OccupationToUpdateDto();
+
+                occupation.ApplyTo(occupationToUpdateDto);
+
+                var occupationToCreate = Mapper.Map<Occupation>(occupationToUpdateDto);
+
+                occupationToCreate.Id = id;
+
+                _fmaRepository.AddOccupation(occupationToCreate);
+
+                if(!_fmaRepository.Save())
+                {
+                    throw new Exception();
+                }
+
+                var occupationDto = Mapper.Map<OccupationDto>(occupationToCreate);
+
+                return CreatedAtRoute("GetOccupation", new { id = id }, occupationDto);
+            }
+
+            var occupationFromRepo = _fmaRepository.GetOccupation(id);
+            var occupationToUpdate = new OccupationToUpdateDto();
+
+            occupation.ApplyTo(occupationToUpdate);
+
+            Mapper.Map(occupationToUpdate, occupationFromRepo);
+
+            _fmaRepository.UpdateOccupation(occupationFromRepo);
+
+            if(!_fmaRepository.Save())
+            {
+                throw new Exception();
+            }
+
+            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+
+
 
             return Ok(outerFacingModelOccupation);
         }
