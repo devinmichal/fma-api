@@ -165,7 +165,14 @@ namespace FMA.API.Controllers
             {
                 var nationalityUpdateDto = new NationalityToUpdateDto();
 
-                nationality.ApplyTo(nationalityUpdateDto);
+                nationality.ApplyTo(nationalityUpdateDto, ModelState);
+
+                TryValidateModel(nationalityUpdateDto);
+
+                if(!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
 
                 var nationalityToCreate = Mapper.Map<Nationality>(nationalityUpdateDto);
 
@@ -187,7 +194,14 @@ namespace FMA.API.Controllers
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
             var nationalityToUpdate = Mapper.Map<NationalityToUpdateDto>(nationalityFromRepo);
 
-            nationality.ApplyTo(nationalityToUpdate);
+            nationality.ApplyTo(nationalityToUpdate, ModelState);
+
+            TryValidateModel(nationalityToUpdate);
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             Mapper.Map(nationalityToUpdate, nationalityFromRepo);
 
