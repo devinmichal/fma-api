@@ -403,12 +403,24 @@ namespace FMA.API.Services
             return currency;
         }
 
-        public IEnumerable<Country> GetCountries()
+        public IEnumerable<CountryDto> GetCountries(ResourceParameters parameters)
         {
             var countries = _context.Countries
-                .Include(c => c.Nationality)
-                .Include(c => c.Capital)
-                .Include(c => c.Currency)
+                .Select(c =>
+                new CountryDto
+                {
+                    Capital = c.Capital.Name,
+                    Currency = c.Currency.Name,
+                    Founded = c.Founded,
+                    Government = c.Government,
+                    Id = c.Id,
+                    Name = c.Name,
+                    Nationality = c.Nationality.Name,
+                    Popuation = c.Population
+                })
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
+                .AsNoTracking()
                 .ToList();
 
             return countries;

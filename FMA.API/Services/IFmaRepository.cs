@@ -21,7 +21,7 @@ namespace FMA.API.Services
         Capital GetCapital(Guid id);
         IEnumerable<Currency> GetCurrencies();
         Currency GetCurrency(Guid id);
-        IEnumerable<Country> GetCountries();
+        IEnumerable<CountryDto> GetCountries(ResourceParameters parameters);
         Country GetCountry(Guid id);
 
         Character AddCharacter(Character character);
