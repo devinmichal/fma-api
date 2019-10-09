@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FMA.API.Models;
 using FMA.API.Entities;
+using FMA.API.Helper;
 
 namespace FMA.API.Controllers
 {
@@ -20,9 +21,9 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult GetCurrencies()
+        public IActionResult GetCurrencies(ResourceParameters parameters)
         {
-            var currenciesFromRepo = _fmaRepository.GetCurrencies();
+            var currenciesFromRepo = _fmaRepository.GetCurrencies(parameters);
 
             var outerFacingModelCurrencies = Mapper.Map<IEnumerable<Currency>, IEnumerable<CurrencyDto>>(currenciesFromRepo);
 

@@ -387,9 +387,11 @@ namespace FMA.API.Services
         {
             _context.Remove(capital);
         }
-        public IEnumerable<Currency> GetCurrencies()
+        public IEnumerable<Currency> GetCurrencies(ResourceParameters parameters)
         {
             var currencies = _context.Currencies
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
                 .ToList();
 
             return currencies;
