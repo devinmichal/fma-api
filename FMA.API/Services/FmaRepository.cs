@@ -427,6 +427,29 @@ namespace FMA.API.Services
             {
                 country.Id = Guid.NewGuid();
             }
+
+            if(country.CurrencyId is null)
+            {
+                country.CurrencyId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+            if(country.CapitalId is null)
+            {
+                country.CapitalId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+            if(country.NationalityId is null)
+            {
+                country.NationalityId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+
+            if(country.Government is null)
+            {
+                country.Government = "Unknown";
+            }
+
+     
             _context.Add(country);
 
             return country;

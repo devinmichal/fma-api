@@ -109,6 +109,11 @@ namespace FMA.API.Controllers
                 return BadRequest();
             }
 
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
             if(!_fmaRepository.CountryExist(id))
             {
                 var countryToCreate = Mapper.Map<Country>(country);
