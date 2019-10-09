@@ -10,6 +10,9 @@ namespace FMA.API.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string CountryName { get; set; }
-        public IEnumerable<CharacterDto> Members { get; set; }
+
+        // probably not needed will need to consider 
+        
+      //  public IEnumerable<CharacterDto> Members { get; set; }
     }
 }

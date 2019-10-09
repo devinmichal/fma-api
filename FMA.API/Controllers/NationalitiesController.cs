@@ -8,6 +8,7 @@ using AutoMapper;
 using FMA.API.Entities;
 using FMA.API.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using FMA.API.Helper;
 
 namespace FMA.API.Controllers
 {
@@ -21,13 +22,13 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet("nationalities")]
-        public IActionResult GetNationalities()
+        public IActionResult GetNationalities(ResourceParameters parameters)
         {
-            var nationalitiesFromRepo = _fmaRepository.GetNationalities();
+            var outerFacingModelNationalities = _fmaRepository.GetNationalities(parameters);
 
-            var nationalities = Mapper.Map<IEnumerable<Nationality>, IEnumerable<NationalityDto>>(nationalitiesFromRepo);
+          //  var nationalities = Mapper.Map<IEnumerable<Nationality>, IEnumerable<NationalityDto>>(nationalitiesFromRepo);
 
-            return Ok(nationalities);
+            return Ok(outerFacingModelNationalities);
         }
 
         [HttpGet("nationalities/{id}", Name = "GetNationality")]

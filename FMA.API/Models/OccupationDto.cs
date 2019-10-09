@@ -11,6 +11,8 @@ namespace FMA.API.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Character>  Members { get; set; }
+
+        //not sure if information is needed
+       // public IEnumerable<Character>  Members { get; set; }
     }
 }

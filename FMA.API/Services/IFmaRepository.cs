@@ -12,7 +12,7 @@ namespace FMA.API.Services
         IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids);
         CharacterDto GetCharacterDto(Guid id);
         Character GetCharacter(Guid id);
-        IEnumerable<Nationality> GetNationalities();
+        IEnumerable<NationalityDto> GetNationalities(ResourceParameters parameters);
         Nationality GetNationality(Guid id);
 
         IEnumerable<Occupation> GetOccupations();

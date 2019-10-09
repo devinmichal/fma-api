@@ -207,11 +207,35 @@ namespace FMA.API.Services
         }
 
         public void UpdateNationality(Nationality nationality) { }
-        public IEnumerable<Nationality> GetNationalities()
+        public IEnumerable<NationalityDto> GetNationalities(ResourceParameters parameters)
         {
             var nationalities = _context.Nationalities
-                .Include(n => n.Country)
-                .Include(n => n.Members)
+                .Select(n => 
+                new NationalityDto() {
+                    CountryName = n.Country.Name,
+                    Name = n.Name,
+                    Id = n.Id
+
+                    // unneccesary data causes performance issues
+
+                  /*  Members = n.Members
+                                .Select(c => 
+                                new CharacterDto() {
+                                    Abilities = c.Abilities,
+                                    Age = c.Age.ToString(),
+                                    Aliases = c.Aliases,
+                                    Country = c.Country.Name,
+                                    FullName = c.FirstName + " " + c.LastName,
+                                    Goal = c.Goal,
+                                    Id = c.Id,
+                                    Nationality = c.Nationality.Name,
+                                    Occupation = c.Occupation.Name,
+                                    Rank = c.Rank,
+                                    Weapon = c.Weapon
+                                }).ToList() */
+                })
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
                 .ToList();
 
             return nationalities;
