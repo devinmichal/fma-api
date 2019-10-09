@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
+using System.ComponentModel.DataAnnotations;
+
 
 namespace FMA.API.Models
 {
-    public class OccupationToUpdateDto
-    {
-        public string Name { get; set; }
+    public class OccupationToUpdateDto : OccupationManipulationDto
+    { 
+        [Required]
+        [MaxLength(1000)]
         public string Decsription { get; set; }
     }
 }

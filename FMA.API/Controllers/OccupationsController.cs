@@ -103,6 +103,11 @@ namespace FMA.API.Controllers
                 return BadRequest();
             }
 
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
             if(_fmaRepository.OccupationExist(id))
             {
                 var occupationToCreate = Mapper.Map<Occupation>(occupation);

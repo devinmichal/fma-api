@@ -2,11 +2,8 @@
 
 namespace FMA.API.Models
 {
-    public class OccupationToCreateDto
+    public class OccupationToCreateDto : OccupationManipulationDto
     {
-        [MaxLength(100)]
-        public string Name { get; set; }
-        [MaxLength(1000)]
-        public string Desciption { get; set; }
+     
     }
 }
