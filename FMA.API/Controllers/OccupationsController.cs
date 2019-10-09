@@ -154,7 +154,14 @@ namespace FMA.API.Controllers
 
                 var occupationToUpdateDto = new OccupationToUpdateDto();
 
-                occupation.ApplyTo(occupationToUpdateDto);
+                occupation.ApplyTo(occupationToUpdateDto, ModelState);
+
+                TryValidateModel(occupationToUpdateDto);
+
+                if(!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
 
                 var occupationToCreate = Mapper.Map<Occupation>(occupationToUpdateDto);
 
@@ -175,7 +182,14 @@ namespace FMA.API.Controllers
             var occupationFromRepo = _fmaRepository.GetOccupation(id);
             var occupationToUpdate = new OccupationToUpdateDto();
 
-            occupation.ApplyTo(occupationToUpdate);
+            occupation.ApplyTo(occupationToUpdate, ModelState);
+
+            TryValidateModel(occupationToUpdate);
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             Mapper.Map(occupationToUpdate, occupationFromRepo);
 
