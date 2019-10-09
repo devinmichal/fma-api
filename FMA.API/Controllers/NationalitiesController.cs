@@ -53,6 +53,10 @@ namespace FMA.API.Controllers
                 return BadRequest(new { message = "Need resource in the body" });
             }
 
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             if (!_fmaRepository.CountryExist(countryId))
             {
