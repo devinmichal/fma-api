@@ -144,7 +144,7 @@ namespace FMA.API.Entities
 
             };
            
-          /*  for(int i = 0; i < 5000; i++)
+            for(int i = 0; i < 500; i++)
             {
 
                 character.Add(new Character()
@@ -162,7 +162,7 @@ namespace FMA.API.Entities
                     Aliases = "Flame Alchemist,Hero of Ishbal,Roy-Boy, Chief",
                     CountryId = new Guid("63891193-dce2-41ee-bdb0-6cfaf69b6d27"),
                 });
-            } */
+            } 
             context.AddRange(character);
              context.SaveChanges();
         } 

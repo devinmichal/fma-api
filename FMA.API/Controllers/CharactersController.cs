@@ -5,6 +5,7 @@ using FMA.API.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Microsoft.AspNetCore.JsonPatch;
+using FMA.API.Helper;
 
 namespace FMA.API.Controllers
 {
@@ -22,9 +23,9 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet()]
-        public IActionResult GetCharacters()
+        public IActionResult GetCharacters(ResourceParameters parameters)
         {
-            var charactersFromRepo = _fmaRepository.GetCharacters();
+            var charactersFromRepo = _fmaRepository.GetCharacters(parameters);
             //var characters = Mapper.Map<IEnumerable<Character>,IEnumerable<CharacterDto>>(charactersFromRepo);
 
 

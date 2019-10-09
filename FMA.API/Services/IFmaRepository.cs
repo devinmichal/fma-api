@@ -8,7 +8,7 @@ namespace FMA.API.Services
 {
    public interface IFmaRepository
     {
-         IEnumerable<CharacterDto> GetCharacters();
+         IEnumerable<CharacterDto> GetCharacters(ResourceParameters parameters);
         IEnumerable<CharacterDto> GetCharacters(IEnumerable<Guid> ids);
         CharacterDto GetCharacterDto(Guid id);
         Character GetCharacter(Guid id);

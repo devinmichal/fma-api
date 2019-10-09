@@ -100,7 +100,7 @@ namespace FMA.API.Services
             _context.Remove(character);
         }
 
-        public IEnumerable<CharacterDto> GetCharacters()
+        public IEnumerable<CharacterDto> GetCharacters(ResourceParameters parameters)
         {
            
                  var characters =
@@ -120,8 +120,10 @@ namespace FMA.API.Services
                          Rank = c.Rank,
                          Weapon = c.Weapon
                      })
-                 .AsNoTracking()
-                 .ToList();
+                  .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                  .Take(parameters.PageSize)
+                  .AsNoTracking()
+                  .ToList();
                  
                 return characters;
             
