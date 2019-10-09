@@ -1,4 +1,5 @@
 ﻿using FMA.API.Entities;
+using FMA.API.Helper;
 using FMA.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -361,9 +362,12 @@ namespace FMA.API.Services
 
             return boolean;
         }
-        public IEnumerable<Capital> GetCapitals()
+        public IEnumerable<Capital> GetCapitals(ResourceParameters parameters)
         {
             var capitals = _context.Capitals
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
+                .AsNoTracking()
                 .ToList();
 
             return capitals;

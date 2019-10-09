@@ -1,4 +1,5 @@
 ﻿using FMA.API.Entities;
+using FMA.API.Helper;
 using FMA.API.Models;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace FMA.API.Services
 
         IEnumerable<Occupation> GetOccupations();
         Occupation GetOccupation(Guid id);
-        IEnumerable<Capital> GetCapitals();
+        IEnumerable<Capital> GetCapitals(ResourceParameters parameters);
         Capital GetCapital(Guid id);
         IEnumerable<Currency> GetCurrencies();
         Currency GetCurrency(Guid id);

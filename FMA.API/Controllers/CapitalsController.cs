@@ -8,6 +8,7 @@ using AutoMapper;
 using FMA.API.Entities;
 using FMA.API.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using FMA.API.Helper;
 
 namespace FMA.API.Controllers
 {
@@ -21,9 +22,9 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet("capitals")]
-        public IActionResult GetCapitals()
+        public IActionResult GetCapitals([FromQuery] ResourceParameters resourceParameters)
         {
-            var capitalsFromRepo = _fmaRepository.GetCapitals();
+            var capitalsFromRepo = _fmaRepository.GetCapitals(resourceParameters);
 
             var outerFacingModelCapitals = Mapper.Map<IEnumerable<Capital>, IEnumerable<CapitalDto>>(capitalsFromRepo);
 
