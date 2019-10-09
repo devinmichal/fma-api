@@ -29,6 +29,7 @@ namespace FMA.API.Entities
 
         [MaxLength(100)]
         public int Population { get; set; }
+        [MaxLength(100)]
 
         public string Government { get; set; }
      
