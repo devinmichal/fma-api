@@ -164,7 +164,14 @@ namespace FMA.API.Controllers
             {
                 var capitalToUpdateDto = new CapitalToUpdateDto();
 
-                capital.ApplyTo(capitalToUpdateDto);
+                capital.ApplyTo(capitalToUpdateDto,ModelState);
+
+                TryValidateModel(capitalToUpdateDto);
+
+                if(!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
 
                 var capitalToCreate = Mapper.Map<Capital>(capitalToUpdateDto);
                 capitalToCreate.Id = id;
@@ -185,7 +192,14 @@ namespace FMA.API.Controllers
 
             var capitalToPatch = Mapper.Map<CapitalToUpdateDto>(capitalFromRepo);
 
-            capital.ApplyTo(capitalToPatch);
+            capital.ApplyTo(capitalToPatch, ModelState);
+
+            TryValidateModel(capitalToPatch);
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             Mapper.Map(capitalToPatch, capitalFromRepo);
 
