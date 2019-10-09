@@ -125,6 +125,11 @@ namespace FMA.API.Controllers
             {
                 return BadRequest();
             }
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
          
             if(!_fmaRepository.CharacterExist(id))
             {

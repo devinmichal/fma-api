@@ -47,6 +47,48 @@ namespace FMA.API.Services
             {
                 character.Id = Guid.NewGuid();
             }
+
+            if(character.CountryId is null)
+            {
+                character.CountryId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+            if (character.NationalityId is null)
+            {
+                character.NationalityId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+
+            if (character.OccupationId is null)
+            {
+                character.OccupationId = new Guid("0a872c12-38e6-4ca4-67a3-08d71d561291");
+            }
+
+            if(character.Rank is null)
+            {
+                character.Rank = "None";
+            }
+
+            if(character.Weapon is null)
+            {
+                character.Weapon = "None";
+            }
+
+            if(character.Goal is null)
+            {
+                character.Goal = "Unknown";
+            }
+
+            if(character.Abilities is null)
+            {
+                character.Abilities = "No abilities";
+            }
+
+            if(character.Aliases is null)
+            {
+                character.Aliases = "No aliases";
+            }
+
             _context.Add(character);
 
             return character;
