@@ -160,7 +160,14 @@ namespace FMA.API.Controllers
             {
                 var countryToUpdate = new CountryToUpdateDto();
 
-                country.ApplyTo(countryToUpdate);
+                country.ApplyTo(countryToUpdate, ModelState);
+
+                TryValidateModel(countryToUpdate);
+
+                if(!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
 
                 var countryToCreate = Mapper.Map<Country>(countryToUpdate);
 
@@ -181,7 +188,14 @@ namespace FMA.API.Controllers
             var countryFromRepo = _fmaRepository.GetCountry(countryId);
             var countryToUpdateDto = Mapper.Map<CountryToUpdateDto>(countryFromRepo);
 
-            country.ApplyTo(countryToUpdateDto);
+            country.ApplyTo(countryToUpdateDto, ModelState);
+
+            TryValidateModel(countryToUpdateDto);
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             Mapper.Map(countryToUpdateDto, countryFromRepo);
 
