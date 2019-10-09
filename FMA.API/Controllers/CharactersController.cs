@@ -175,7 +175,14 @@ namespace FMA.API.Controllers
             if(!_fmaRepository.CharacterExist(id))
             {
                 var characterToUpdateDto = new CharacterToUpdateDto();
-                character.ApplyTo(characterToUpdateDto);
+                character.ApplyTo(characterToUpdateDto, ModelState);
+
+                TryValidateModel(characterToUpdateDto);
+
+                if (!ModelState.IsValid)
+                {
+                    return new UnprocessableEntityObjectResult(ModelState);
+                }
 
                 var characterToCreate = Mapper.Map<Character>(characterToUpdateDto);
                 characterToCreate.Id = id;
@@ -195,7 +202,14 @@ namespace FMA.API.Controllers
             var characterFromRepo = _fmaRepository.GetCharacter(id);
             var characterUpdateDto = Mapper.Map<CharacterToUpdateDto>(characterFromRepo);
 
-            character.ApplyTo(characterUpdateDto);
+            character.ApplyTo(characterUpdateDto,ModelState);
+
+            TryValidateModel(characterUpdateDto);
+
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
 
             Mapper.Map(characterUpdateDto, characterFromRepo);
 
