@@ -15,7 +15,7 @@ namespace FMA.API.Services
         IEnumerable<NationalityDto> GetNationalities(ResourceParameters parameters);
         Nationality GetNationality(Guid id);
 
-        IEnumerable<Occupation> GetOccupations();
+        IEnumerable<Occupation> GetOccupations(ResourceParameters parameters);
         Occupation GetOccupation(Guid id);
         IEnumerable<Capital> GetCapitals(ResourceParameters parameters);
         Capital GetCapital(Guid id);

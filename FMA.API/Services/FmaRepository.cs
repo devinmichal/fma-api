@@ -300,10 +300,11 @@ namespace FMA.API.Services
         }
 
         public void UpdateOccupation(Occupation occupation) { }
-        public IEnumerable<Occupation> GetOccupations()
+        public IEnumerable<Occupation> GetOccupations(ResourceParameters parameters)
         {
             var occupations = _context.Occupations
-                .Include(o => o.Members)
+                .Skip(parameters.PageSize * (parameters.PageNumber - 1))
+                .Take(parameters.PageSize)
                 .ToList();
 
             return occupations;

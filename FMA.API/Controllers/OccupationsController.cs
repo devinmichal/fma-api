@@ -8,6 +8,7 @@ using AutoMapper;
 using FMA.API.Models;
 using FMA.API.Entities;
 using Microsoft.AspNetCore.JsonPatch;
+using FMA.API.Helper;
 
 namespace FMA.API.Controllers
 {
@@ -21,9 +22,9 @@ namespace FMA.API.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult GetOccupations() {
+        public IActionResult GetOccupations(ResourceParameters parameters) {
 
-            var occupationsFromRepo = _fmaRepository.GetOccupations();
+            var occupationsFromRepo = _fmaRepository.GetOccupations(parameters);
 
             var outerFacingModelOccupations = Mapper.Map<IEnumerable<Occupation>,IEnumerable<OccupationDto>>(occupationsFromRepo);
 

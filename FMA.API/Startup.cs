@@ -82,8 +82,7 @@ namespace FMA.API
                     .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
 
                 ctg.CreateMap<Nationality, NationalityDto>()
-                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name))
-                 .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.Members));
+                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name));
 
                 ctg.CreateMap<Occupation, OccupationDto>();
 
