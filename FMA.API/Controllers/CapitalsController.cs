@@ -113,6 +113,11 @@ namespace FMA.API.Controllers
                 return BadRequest();
             }
 
+            if(!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
             if (!_fmaRepository.CapitalExist(id))
             {
                 var capitalToCreate = Mapper.Map<Capital>(capital);

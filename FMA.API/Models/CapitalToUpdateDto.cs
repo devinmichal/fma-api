@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace FMA.API.Models
 {
-    public class CapitalToUpdateDto
+    public class CapitalToUpdateDto : CapitalManipulationDto
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+ 
     }
 }

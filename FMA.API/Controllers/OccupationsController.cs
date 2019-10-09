@@ -52,6 +52,11 @@ namespace FMA.API.Controllers
                 return BadRequest(new { message = "Need resource in the body" });
             }
 
+            if (!ModelState.IsValid)
+            {
+                return new UnprocessableEntityObjectResult(ModelState);
+            }
+
             var occupationToCreate = Mapper.Map<Occupation>(occupationToCreateDto);
 
             if(_fmaRepository.OccupationExist(occupationToCreate))
