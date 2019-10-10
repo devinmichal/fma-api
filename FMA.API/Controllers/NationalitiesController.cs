@@ -16,9 +16,11 @@ namespace FMA.API.Controllers
     public class NationalitiesController : Controller
     {
         private IFmaRepository _fmaRepository;
-        public NationalitiesController(IFmaRepository fmaRepository)
+        private IMapper _mapper;
+        public NationalitiesController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("nationalities")]
@@ -40,7 +42,7 @@ namespace FMA.API.Controllers
             {
                 return NotFound();
             }
-            var nationality = Mapper.Map<Nationality, NationalityDto>(nationalityFromRepo);
+            var nationality = _mapper.Map<Nationality, NationalityDto>(nationalityFromRepo);
 
             return Ok(nationality);
         }
@@ -64,7 +66,7 @@ namespace FMA.API.Controllers
                 return NotFound(new { message = "Country doesn't exist" });
             }
 
-            var nationalityToBeCreated = Mapper.Map<Nationality>(nationalityToCreateDto);
+            var nationalityToBeCreated = _mapper.Map<Nationality>(nationalityToCreateDto);
 
 
             if (_fmaRepository.NationalityExist(nationalityToBeCreated))
@@ -80,7 +82,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Cannot save resource." });
             }
 
-            var outerFacingModelNationality = Mapper.Map<NationalityDto>(createdNationality);
+            var outerFacingModelNationality = _mapper.Map<NationalityDto>(createdNationality);
 
             return Created("", outerFacingModelNationality);
         }
@@ -124,7 +126,7 @@ namespace FMA.API.Controllers
 
             if (!_fmaRepository.NationalityExist(id))
             {
-                var nationalityToCreate = Mapper.Map<Nationality>(nationality);
+                var nationalityToCreate = _mapper.Map<Nationality>(nationality);
                 nationalityToCreate.Id = id;
 
                 _fmaRepository.AddNationality(nationalityToCreate);
@@ -134,13 +136,13 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var nationalityDto = Mapper.Map<Nationality>(nationalityToCreate);
+                var nationalityDto = _mapper.Map<Nationality>(nationalityToCreate);
 
                 return CreatedAtRoute("GetNationality", new { id = id }, nationalityDto);
             }
 
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
-            Mapper.Map(nationality, nationalityFromRepo);
+            _mapper.Map(nationality, nationalityFromRepo);
 
             _fmaRepository.UpdateNationality(nationalityFromRepo);
 
@@ -149,7 +151,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Problem updating nationality" });
             }
 
-            var outerFacingModelNationality = Mapper.Map<NationalityDto>(nationalityFromRepo);
+            var outerFacingModelNationality = _mapper.Map<NationalityDto>(nationalityFromRepo);
             return Ok(outerFacingModelNationality);
         }
 
@@ -175,7 +177,7 @@ namespace FMA.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var nationalityToCreate = Mapper.Map<Nationality>(nationalityUpdateDto);
+                var nationalityToCreate = _mapper.Map<Nationality>(nationalityUpdateDto);
 
                 nationalityToCreate.Id = id;
 
@@ -186,14 +188,14 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var nationalityDto = Mapper.Map<NationalityDto>(nationalityToCreate);
+                var nationalityDto = _mapper.Map<NationalityDto>(nationalityToCreate);
 
 
                 return CreatedAtRoute("GetNationality", new { id = id }, nationalityDto);
             }
 
             var nationalityFromRepo = _fmaRepository.GetNationality(id);
-            var nationalityToUpdate = Mapper.Map<NationalityToUpdateDto>(nationalityFromRepo);
+            var nationalityToUpdate = _mapper.Map<NationalityToUpdateDto>(nationalityFromRepo);
 
             nationality.ApplyTo(nationalityToUpdate, ModelState);
 
@@ -204,7 +206,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            Mapper.Map(nationalityToUpdate, nationalityFromRepo);
+            _mapper.Map(nationalityToUpdate, nationalityFromRepo);
 
             _fmaRepository.UpdateNationality(nationalityFromRepo);
 
@@ -214,7 +216,7 @@ namespace FMA.API.Controllers
                 throw new Exception();
             }
 
-            var outerFacingModelNationality = Mapper.Map<CountryDto>(nationalityFromRepo);
+            var outerFacingModelNationality = _mapper.Map<CountryDto>(nationalityFromRepo);
 
             return Ok(outerFacingModelNationality);
 

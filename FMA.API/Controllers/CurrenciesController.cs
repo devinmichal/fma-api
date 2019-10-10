@@ -15,9 +15,11 @@ namespace FMA.API.Controllers
     public class CurrenciesController : Controller
     {
         private IFmaRepository _fmaRepository;
-        public CurrenciesController(IFmaRepository fmaRepository)
+        private IMapper _mapper;
+        public CurrenciesController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
 
         [HttpGet()]
@@ -25,7 +27,7 @@ namespace FMA.API.Controllers
         {
             var currenciesFromRepo = _fmaRepository.GetCurrencies(parameters);
 
-            var outerFacingModelCurrencies = Mapper.Map<IEnumerable<Currency>, IEnumerable<CurrencyDto>>(currenciesFromRepo);
+            var outerFacingModelCurrencies = _mapper.Map<IEnumerable<Currency>, IEnumerable<CurrencyDto>>(currenciesFromRepo);
 
             return Ok(outerFacingModelCurrencies);
         }
@@ -40,7 +42,7 @@ namespace FMA.API.Controllers
                 return NotFound();
             }
 
-            var outerFacingModelCurrency = Mapper.Map<CurrencyDto>(currencyFromRepo);
+            var outerFacingModelCurrency = _mapper.Map<CurrencyDto>(currencyFromRepo);
 
             return Ok(outerFacingModelCurrency);
         }

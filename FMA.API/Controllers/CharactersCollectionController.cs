@@ -14,10 +14,12 @@ namespace FMA.API.Controllers
     [Route("api/CharactersCollection")]
     public class CharactersCollectionController : Controller
     {
-        private IFmaRepository _fmaRepository; 
-        public CharactersCollectionController(IFmaRepository fmaRepository)
+        private IFmaRepository _fmaRepository;
+        private IMapper _mapper;
+        public CharactersCollectionController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
         [HttpPost()]
 
@@ -30,7 +32,7 @@ namespace FMA.API.Controllers
 
             
             
-            var charactersToCreate = Mapper.Map<IEnumerable<Character>>(characterToCreateDtos);
+            var charactersToCreate = _mapper.Map<IEnumerable<Character>>(characterToCreateDtos);
             foreach(var characterToCreate in charactersToCreate) { 
                 if(_fmaRepository.CharacterExist(characterToCreate))
                 {
@@ -44,7 +46,7 @@ namespace FMA.API.Controllers
             {
                 return StatusCode(500, new { message = "Couldn't save resource" });
             }
-            var outerFacingModelCharacters = Mapper.Map<IEnumerable<CharacterDto>>(charactersToCreate);
+            var outerFacingModelCharacters = _mapper.Map<IEnumerable<CharacterDto>>(charactersToCreate);
 
             var idsAsString = string.Join(",", outerFacingModelCharacters.Select(c => c.Id));
 
@@ -66,7 +68,7 @@ namespace FMA.API.Controllers
                 return NotFound(new { message = "Resource(s) don't exist" });
             }
 
-            var outerFacingModelCharacters = Mapper.Map<IEnumerable<CharacterDto>>(characters);
+            var outerFacingModelCharacters = _mapper.Map<IEnumerable<CharacterDto>>(characters);
 
             return Ok(outerFacingModelCharacters);
 

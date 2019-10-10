@@ -14,9 +14,11 @@ namespace FMA.API.Controllers
     public class CountriesController : Controller
     {
         private IFmaRepository _fmaRepository;
-        public CountriesController(IFmaRepository fmaRepository)
+        private IMapper _mapper;
+        public CountriesController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
 
         [HttpGet()]
@@ -41,7 +43,7 @@ namespace FMA.API.Controllers
                 return NotFound();
             }
 
-            var outerFacingModelCountry = Mapper.Map<CountryDto>(countryFromRepo);
+            var outerFacingModelCountry = _mapper.Map<CountryDto>(countryFromRepo);
 
             return Ok(outerFacingModelCountry);
         }
@@ -59,7 +61,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            var countryToBeCreated = Mapper.Map<Country>(countryDto);
+            var countryToBeCreated = _mapper.Map<Country>(countryDto);
 
             if (_fmaRepository.CountryExist(countryToBeCreated))
             {
@@ -74,7 +76,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, "An error saving resource");
             }
 
-            var outerFacingModelCountry = Mapper.Map<CountryDto>(createdCountry);
+            var outerFacingModelCountry = _mapper.Map<CountryDto>(createdCountry);
 
             return Created("", outerFacingModelCountry);
         }
@@ -119,7 +121,7 @@ namespace FMA.API.Controllers
 
             if(!_fmaRepository.CountryExist(id))
             {
-                var countryToCreate = Mapper.Map<Country>(country);
+                var countryToCreate = _mapper.Map<Country>(country);
                 countryToCreate.Id = id;
 
                 _fmaRepository.AddCountry(countryToCreate);
@@ -129,13 +131,13 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var countryDto = Mapper.Map<CountryDto>(countryToCreate);
+                var countryDto = _mapper.Map<CountryDto>(countryToCreate);
 
                 return CreatedAtRoute("GetCountry",new { id = id},countryDto);
             }
 
             var countryFromRepo = _fmaRepository.GetCountry(id);
-            Mapper.Map(country, countryFromRepo);
+            _mapper.Map(country, countryFromRepo);
 
             _fmaRepository.UpdateCountry(countryFromRepo);
 
@@ -144,7 +146,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Problem updating country" });
             }
 
-            var outerFacingModelCountry = Mapper.Map<CountryDto>(countryFromRepo);
+            var outerFacingModelCountry = _mapper.Map<CountryDto>(countryFromRepo);
 
             return Ok(outerFacingModelCountry);
         }
@@ -172,7 +174,7 @@ namespace FMA.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var countryToCreate = Mapper.Map<Country>(countryToUpdate);
+                var countryToCreate = _mapper.Map<Country>(countryToUpdate);
 
                 countryToCreate.Id = countryId;
 
@@ -183,13 +185,13 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var countryDto = Mapper.Map<CountryDto>(countryToCreate);
+                var countryDto = _mapper.Map<CountryDto>(countryToCreate);
 
                 return CreatedAtRoute("GetCountry",new { id = countryId},countryDto);
             }
 
             var countryFromRepo = _fmaRepository.GetCountry(countryId);
-            var countryToUpdateDto = Mapper.Map<CountryToUpdateDto>(countryFromRepo);
+            var countryToUpdateDto = _mapper.Map<CountryToUpdateDto>(countryFromRepo);
 
             country.ApplyTo(countryToUpdateDto, ModelState);
 
@@ -200,7 +202,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            Mapper.Map(countryToUpdateDto, countryFromRepo);
+            _mapper.Map(countryToUpdateDto, countryFromRepo);
 
             _fmaRepository.UpdateCountry(countryFromRepo);
 
@@ -209,7 +211,7 @@ namespace FMA.API.Controllers
                 throw new Exception();
             }
 
-            var outerFacingModelCountry = Mapper.Map<CountryDto>(countryFromRepo);
+            var outerFacingModelCountry = _mapper.Map<CountryDto>(countryFromRepo);
 
             return Ok(outerFacingModelCountry);
         }

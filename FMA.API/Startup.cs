@@ -18,6 +18,7 @@ using AutoMapper;
 using FMA.API.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using System.Reflection;
 
 namespace FMA.API
 {
@@ -45,6 +46,9 @@ namespace FMA.API
                options.UseSqlServer(connectionString);
            });
             services.AddScoped<IFmaRepository, FmaRepository>();
+
+            var assemblies = Assembly.Load("FMA.API");
+            services.AddAutoMapper(assemblies);
           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -70,53 +74,6 @@ namespace FMA.API
 
             app.UseHttpsRedirection();
             context.SeedDataForContext();
-
-            Mapper.Initialize(
-            ctg =>
-            {
-
-                ctg.CreateMap<Character, CharacterDto>()
-                    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
-                    .ForMember(dest => dest.Occupation, opt => opt.MapFrom(src => src.Occupation.Name))
-                    .ForMember(dest => dest.Nationality, opt => opt.MapFrom(src => src.Nationality.Name))
-                    .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name));
-
-                ctg.CreateMap<Nationality, NationalityDto>()
-                 .ForMember(dest => dest.CountryName, opt => opt.MapFrom(src => src.Country.Name));
-
-                ctg.CreateMap<Occupation, OccupationDto>();
-
-                ctg.CreateMap<Capital,CapitalDto>();
-
-                ctg.CreateMap<Currency, CurrencyDto>();
-
-                ctg.CreateMap<Country, CountryDto>()
-                .ForMember(dest => dest.Capital, opt => opt.MapFrom(src => src.Capital.Name))
-                .ForMember(dest => dest.Nationality, opt => opt.MapFrom(src => src.Nationality.Name))
-                .ForMember(dest => dest.Currency, opt => opt.MapFrom(src => src.Currency.Name));
-
-                ctg.CreateMap<CharacterToCreateDto, Character>();
-                ctg.CreateMap<CountryToCreateDto, Country>();
-                ctg.CreateMap<CapitalToCreateDto, Capital>();
-                ctg.CreateMap<NationalityToCreateDto, Nationality>();
-                ctg.CreateMap<OccupationToCreateDto, Occupation>();
-                ctg.CreateMap<CapitalToUpdateDto, Capital>();
-                ctg.CreateMap<CharacterToUpdateDto, Character>();
-                ctg.CreateMap<NationalityToUpdateDto, Nationality>();
-                ctg.CreateMap<OccupationToUpdateDto, Occupation>();
-                ctg.CreateMap<CountryToUpdateDto, Country>();
-                ctg.CreateMap<Capital, CapitalToUpdateDto>();
-                ctg.CreateMap<Character, CharacterToUpdateDto>();
-                ctg.CreateMap<Country, CountryToUpdateDto>();
-                ctg.CreateMap<Nationality, NationalityToUpdateDto>();
-                
-
-
-            }
-         );
-         
-           
-
             app.UseMvc();
         }
 

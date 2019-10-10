@@ -16,9 +16,11 @@ namespace FMA.API.Controllers
     public class CapitalsController : Controller
     {
         private IFmaRepository _fmaRepository;
-        public CapitalsController(IFmaRepository fmaRepository)
+        private IMapper _mapper;
+        public CapitalsController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("capitals")]
@@ -26,7 +28,7 @@ namespace FMA.API.Controllers
         {
             var capitalsFromRepo = _fmaRepository.GetCapitals(resourceParameters);
 
-            var outerFacingModelCapitals = Mapper.Map<IEnumerable<Capital>, IEnumerable<CapitalDto>>(capitalsFromRepo);
+            var outerFacingModelCapitals = _mapper.Map<IEnumerable<Capital>, IEnumerable<CapitalDto>>(capitalsFromRepo);
 
             return Ok(outerFacingModelCapitals);
         }
@@ -40,7 +42,7 @@ namespace FMA.API.Controllers
                 return NotFound();
             }
 
-            var outFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
+            var outFacingModelCapital = _mapper.Map<CapitalDto>(capitalFromRepo);
 
             return Ok(outFacingModelCapital);
         }
@@ -63,7 +65,7 @@ namespace FMA.API.Controllers
             {
                 return NotFound(new { message ="Country doesn't exist"});
             }
-            var capitalToCreated = Mapper.Map<Capital>(capitalToCreateDto);
+            var capitalToCreated = _mapper.Map<Capital>(capitalToCreateDto);
 
             if(_fmaRepository.CapitalExist(capitalToCreated))
             {
@@ -76,7 +78,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Error saving resource" });
             }
 
-            var outerFacingModelCaptial = Mapper.Map<CapitalDto>(createdCapital);
+            var outerFacingModelCaptial = _mapper.Map<CapitalDto>(createdCapital);
 
             return Created("", outerFacingModelCaptial);
             
@@ -121,7 +123,7 @@ namespace FMA.API.Controllers
 
             if (!_fmaRepository.CapitalExist(id))
             {
-                var capitalToCreate = Mapper.Map<Capital>(capital);
+                var capitalToCreate = _mapper.Map<Capital>(capital);
                 capitalToCreate.Id = id;
 
                 _fmaRepository.AddCapital(capitalToCreate);
@@ -131,14 +133,14 @@ namespace FMA.API.Controllers
                     return StatusCode(500, new { message = "Problem creating capital" });
                 }
 
-                var capitalDto = Mapper.Map<CapitalDto>(capitalToCreate);
+                var capitalDto = _mapper.Map<CapitalDto>(capitalToCreate);
 
                 return CreatedAtRoute("GetCapital",new { id = capitalToCreate.Id},capitalDto);
             }
 
             var capitalFromRepo = _fmaRepository.GetCapital(id);
 
-            Mapper.Map(capital, capitalFromRepo);
+            _mapper.Map(capital, capitalFromRepo);
 
             _fmaRepository.UpdateCapital(capitalFromRepo);
             
@@ -147,7 +149,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Couldn't update capital" });
             }
 
-            var outerFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
+            var outerFacingModelCapital = _mapper.Map<CapitalDto>(capitalFromRepo);
 
             return Ok(outerFacingModelCapital);
         }
@@ -174,7 +176,7 @@ namespace FMA.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var capitalToCreate = Mapper.Map<Capital>(capitalToUpdateDto);
+                var capitalToCreate = _mapper.Map<Capital>(capitalToUpdateDto);
                 capitalToCreate.Id = id;
 
                 _fmaRepository.AddCapital(capitalToCreate);
@@ -184,14 +186,14 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var capitalDto = Mapper.Map<CapitalDto>(capitalToCreate);
+                var capitalDto = _mapper.Map<CapitalDto>(capitalToCreate);
 
                 return CreatedAtRoute("GetCapital", new { id = capitalToCreate.Id }, capitalDto);
             }
 
             var capitalFromRepo = _fmaRepository.GetCapital(id);
 
-            var capitalToPatch = Mapper.Map<CapitalToUpdateDto>(capitalFromRepo);
+            var capitalToPatch = _mapper.Map<CapitalToUpdateDto>(capitalFromRepo);
 
             capital.ApplyTo(capitalToPatch, ModelState);
 
@@ -202,7 +204,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            Mapper.Map(capitalToPatch, capitalFromRepo);
+            _mapper.Map(capitalToPatch, capitalFromRepo);
 
             _fmaRepository.UpdateCapital(capitalFromRepo);
 
@@ -210,7 +212,7 @@ namespace FMA.API.Controllers
             {
                 throw new Exception();
             }
-            var outerFacingModelCapital = Mapper.Map<CapitalDto>(capitalFromRepo);
+            var outerFacingModelCapital = _mapper.Map<CapitalDto>(capitalFromRepo);
 
             return Ok(outerFacingModelCapital);
         }

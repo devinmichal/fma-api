@@ -13,11 +13,13 @@ namespace FMA.API.Controllers
     public class CharactersController : Controller
     {
         private IFmaRepository _fmaRepository;
+        private IMapper _mapper;
 
 
-        public CharactersController(IFmaRepository fmaRepository)
+        public CharactersController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
 
 
         }
@@ -60,8 +62,9 @@ namespace FMA.API.Controllers
             {
                 return  new UnprocessableEntityObjectResult(ModelState);
             }
-
-            var characterToBeCreated = Mapper.Map<Character>(characterDto);
+            
+           
+            var characterToBeCreated = _mapper.Map<Character>(characterDto);
 
             var exist = _fmaRepository.CharacterExist(characterToBeCreated);
 
@@ -77,7 +80,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, "An error saving resource");
             }
 
-            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterToBeCreated);
+            var outerFacingModelCharacter = _mapper.Map<CharacterDto>(characterToBeCreated);
 
             return CreatedAtRoute("GetCharacter",new { id = characterToBeCreated.Id} ,outerFacingModelCharacter);
         }
@@ -134,7 +137,7 @@ namespace FMA.API.Controllers
          
             if(!_fmaRepository.CharacterExist(id))
             {
-                var characterToCreate = Mapper.Map<Character>(character);
+                var characterToCreate = _mapper.Map<Character>(character);
                 characterToCreate.Id = id;
 
                 _fmaRepository.AddCharacter(characterToCreate);
@@ -144,13 +147,13 @@ namespace FMA.API.Controllers
                     return StatusCode(500, new { message ="Problem creating character"});
                 }
 
-                var characterDto = Mapper.Map<CharacterDto>(characterToCreate);
+                var characterDto = _mapper.Map<CharacterDto>(characterToCreate);
 
                 return CreatedAtRoute("GetCharacter", new { id =id},characterDto);
             }
 
             var characterFromRepo = _fmaRepository.GetCharacter(id);
-            Mapper.Map(character, characterFromRepo);
+            _mapper.Map(character, characterFromRepo);
 
             _fmaRepository.UpdateCharacter(characterFromRepo);
 
@@ -159,7 +162,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Problem updating character" });
             }
 
-            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterFromRepo);
+            var outerFacingModelCharacter = _mapper.Map<CharacterDto>(characterFromRepo);
 
             return Ok(outerFacingModelCharacter);
         }
@@ -185,7 +188,7 @@ namespace FMA.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var characterToCreate = Mapper.Map<Character>(characterToUpdateDto);
+                var characterToCreate = _mapper.Map<Character>(characterToUpdateDto);
                 characterToCreate.Id = id;
 
                 _fmaRepository.AddCharacter(characterToCreate);
@@ -195,13 +198,13 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var characterDto = Mapper.Map<CharacterDto>(characterToCreate);
+                var characterDto = _mapper.Map<CharacterDto>(characterToCreate);
 
                 return CreatedAtRoute("GetCharacter",new { id = id},characterDto);
             }
 
             var characterFromRepo = _fmaRepository.GetCharacter(id);
-            var characterUpdateDto = Mapper.Map<CharacterToUpdateDto>(characterFromRepo);
+            var characterUpdateDto = _mapper.Map<CharacterToUpdateDto>(characterFromRepo);
 
             character.ApplyTo(characterUpdateDto,ModelState);
 
@@ -212,7 +215,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            Mapper.Map(characterUpdateDto, characterFromRepo);
+            _mapper.Map(characterUpdateDto, characterFromRepo);
 
             _fmaRepository.UpdateCharacter(characterFromRepo);
 
@@ -221,7 +224,7 @@ namespace FMA.API.Controllers
                 throw new Exception();
             }
 
-            var outerFacingModelCharacter = Mapper.Map<CharacterDto>(characterFromRepo);
+            var outerFacingModelCharacter = _mapper.Map<CharacterDto>(characterFromRepo);
 
             return Ok(outerFacingModelCharacter);
         }

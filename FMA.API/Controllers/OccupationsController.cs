@@ -16,9 +16,11 @@ namespace FMA.API.Controllers
     public class OccupationsController : Controller
     {
         private IFmaRepository _fmaRepository;
-        public OccupationsController(IFmaRepository fmaRepository)
+        private IMapper _mapper;
+        public OccupationsController(IFmaRepository fmaRepository, IMapper mapper)
         {
             _fmaRepository = fmaRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("")]
@@ -26,7 +28,7 @@ namespace FMA.API.Controllers
 
             var occupationsFromRepo = _fmaRepository.GetOccupations(parameters);
 
-            var outerFacingModelOccupations = Mapper.Map<IEnumerable<Occupation>,IEnumerable<OccupationDto>>(occupationsFromRepo);
+            var outerFacingModelOccupations = _mapper.Map<IEnumerable<Occupation>,IEnumerable<OccupationDto>>(occupationsFromRepo);
 
             return Ok(outerFacingModelOccupations);
         }
@@ -41,7 +43,7 @@ namespace FMA.API.Controllers
                 return NotFound();
             }
 
-            var outFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+            var outFacingModelOccupation = _mapper.Map<OccupationDto>(occupationFromRepo);
             return Ok(outFacingModelOccupation);
         }
 
@@ -58,7 +60,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            var occupationToCreate = Mapper.Map<Occupation>(occupationToCreateDto);
+            var occupationToCreate = _mapper.Map<Occupation>(occupationToCreateDto);
 
             if(_fmaRepository.OccupationExist(occupationToCreate))
             {
@@ -67,7 +69,7 @@ namespace FMA.API.Controllers
 
             var createdOccupation = _fmaRepository.AddOccupation(occupationToCreate);
 
-            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(createdOccupation);
+            var outerFacingModelOccupation = _mapper.Map<OccupationDto>(createdOccupation);
 
             return Created("", outerFacingModelOccupation);
         }
@@ -111,7 +113,7 @@ namespace FMA.API.Controllers
 
             if(_fmaRepository.OccupationExist(id))
             {
-                var occupationToCreate = Mapper.Map<Occupation>(occupation);
+                var occupationToCreate = _mapper.Map<Occupation>(occupation);
                 occupationToCreate.Id = id;
 
                 _fmaRepository.AddOccupation(occupationToCreate);
@@ -121,13 +123,13 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var occupationDto = Mapper.Map<OccupationDto>(occupationToCreate);
+                var occupationDto = _mapper.Map<OccupationDto>(occupationToCreate);
 
                 return CreatedAtRoute("GetOccupation",new {id = id },occupationDto);
             }
 
             var occupationFromRepo = _fmaRepository.GetOccupation(id);
-            Mapper.Map(occupation, occupationFromRepo);
+            _mapper.Map(occupation, occupationFromRepo);
 
             _fmaRepository.UpdateOccupation(occupationFromRepo);
 
@@ -136,7 +138,7 @@ namespace FMA.API.Controllers
                 return StatusCode(500, new { message = "Problem updating occupation" });
             }
 
-            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+            var outerFacingModelOccupation = _mapper.Map<OccupationDto>(occupationFromRepo);
 
             return Ok(outerFacingModelOccupation);
         }
@@ -164,7 +166,7 @@ namespace FMA.API.Controllers
                     return new UnprocessableEntityObjectResult(ModelState);
                 }
 
-                var occupationToCreate = Mapper.Map<Occupation>(occupationToUpdateDto);
+                var occupationToCreate = _mapper.Map<Occupation>(occupationToUpdateDto);
 
                 occupationToCreate.Id = id;
 
@@ -175,7 +177,7 @@ namespace FMA.API.Controllers
                     throw new Exception();
                 }
 
-                var occupationDto = Mapper.Map<OccupationDto>(occupationToCreate);
+                var occupationDto = _mapper.Map<OccupationDto>(occupationToCreate);
 
                 return CreatedAtRoute("GetOccupation", new { id = id }, occupationDto);
             }
@@ -192,7 +194,7 @@ namespace FMA.API.Controllers
                 return new UnprocessableEntityObjectResult(ModelState);
             }
 
-            Mapper.Map(occupationToUpdate, occupationFromRepo);
+            _mapper.Map(occupationToUpdate, occupationFromRepo);
 
             _fmaRepository.UpdateOccupation(occupationFromRepo);
 
@@ -201,7 +203,7 @@ namespace FMA.API.Controllers
                 throw new Exception();
             }
 
-            var outerFacingModelOccupation = Mapper.Map<OccupationDto>(occupationFromRepo);
+            var outerFacingModelOccupation = _mapper.Map<OccupationDto>(occupationFromRepo);
 
 
 
